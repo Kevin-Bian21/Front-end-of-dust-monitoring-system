@@ -1,9 +1,4 @@
-import { Settings as LayoutSettings } from '@ant-design/pro-layout';
-
-const Settings: LayoutSettings & {
-  pwa?: boolean;
-  logo?: string;
-} = {
+const Settings = {
   navTheme: 'light',
   // 拂晓蓝
   primaryColor: '#52C41A',
@@ -19,5 +14,4 @@ const Settings: LayoutSettings & {
   logo: 'https://bianwenkai.oss-cn-beijing.aliyuncs.com/img/智慧矿山.svg',
   iconfontUrl: 'https://bianwenkai.oss-cn-beijing.aliyuncs.com/img/智慧矿山.svg',
 };
-
 export default Settings;
