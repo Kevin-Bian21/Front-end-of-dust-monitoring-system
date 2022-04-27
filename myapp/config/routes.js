@@ -1,4 +1,5 @@
 export default [
+  { path: '/', component: '../layouts/BaseLayout' },
   {
     path: '/user',
     layout: false,
@@ -18,6 +19,14 @@ export default [
     name: 'welcome',
     icon: 'smile',
     component: './Welcome',
+  },
+  {
+    path: '/dust-chart',
+    component: './monitor/dust-chart',
+    name: 'panel',
+    icon: 'icon-jianshi-monitoring',
+    //   access: 'canAdmin',
+    //routes: [{ exact: true }],
   },
   {
     path: '/admin',

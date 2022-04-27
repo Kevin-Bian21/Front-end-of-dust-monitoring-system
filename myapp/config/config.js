@@ -16,6 +16,7 @@ export default defineConfig({
     locale: true,
     siderWidth: 208,
     ...defaultSettings,
+    layout: 'side',
   },
   // https://umijs.org/zh-CN/plugins/plugin-locale
   locale: {
@@ -31,6 +32,7 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
+  //  routes,
   // umi routes: https://umijs.org/docs/routing
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn

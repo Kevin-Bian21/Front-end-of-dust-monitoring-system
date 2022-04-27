@@ -20,6 +20,7 @@ yarn.lock
 package-lock.json
 pnpm-lock.yaml
 *bak
+monitor
 
 
 # visual studio code

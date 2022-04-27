@@ -39,8 +39,9 @@ export async function getInitialState() {
   }
 
   return {
+    name: '张三',
     fetchUserInfo,
-    settings: defaultSettings,
+    //    settings: defaultSettings,
   };
 } // ProLayout 支持的api https://procomponents.ant.design/components/layout
 
@@ -63,15 +64,16 @@ export const layout = ({ initialState, setInitialState }) => {
       ? [
           <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
             <LinkOutlined />
-            <span>OpenAPI 文档</span>
+            {/* <span>OpenAPI 文档</span> */}
           </Link>,
           <Link to="/~docs" key="docs">
             <BookOutlined />
-            <span>业务组件文档</span>
+            {/* <span>业务组件文档</span> */}
           </Link>,
         ]
       : [],
     menuHeaderRender: undefined,
+    iconfontUrl: '//at.alicdn.com/t/font_3358573_ytukw5wjtnc.js',
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态

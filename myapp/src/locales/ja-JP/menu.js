@@ -1,5 +1,6 @@
 export default {
   'menu.welcome': 'ようこそ',
+  'menu.panel': 'モニタパネル',
   'menu.more-blocks': 'その他のブロック',
   'menu.home': 'ホーム',
   'menu.admin': '管理者',

@@ -1,5 +1,6 @@
 export default {
   'menu.welcome': '歡迎',
+  'menu.panel': '監控面板',
   'menu.more-blocks': '更多區塊',
   'menu.home': '首頁',
   'menu.login': '登錄',
