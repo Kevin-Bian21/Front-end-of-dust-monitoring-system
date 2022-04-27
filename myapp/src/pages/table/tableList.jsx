@@ -1,20 +1,31 @@
-import React from 'react';
-import { Table, Tag, Space, Pagination, Button, Row, Col, Divider, Card } from 'antd';
+import React, { useState } from 'react';
+import { Table, Tag, Space, Pagination, Button, Row, Col, Card, Modal as AntdModal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useRequest } from 'umi';
 import styles from './tableList.less';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import Modal from './components/Modal';
 
 const TableList = () => {
+  const [page, setPage] = useState(1);
+  const [per_page, setPer_page] = useState(10);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const { confirm } = AntdModal;
+
   const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      render: (text) => <a>{text}</a>,
+    },
     {
       title: '姓名',
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
-    },
-    {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
     },
     {
       title: '地址',
@@ -55,39 +66,75 @@ const TableList = () => {
           <Button type="primary" size="small">
             编辑
           </Button>
-          <Button type="primary" danger size="small">
+          <Button
+            type="primary"
+            danger
+            size="small"
+            onClick={() => {
+              showDeleteConfirm();
+            }}
+          >
             删除
           </Button>
         </Space>
       ),
     },
   ];
-
   const data = [
     {
+      id: '1',
       key: '1',
-      name: 'John Brown',
+      name: '罗翔',
       age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
+      address: 'China',
+      phone: '110',
+      tags: ['nice'],
     },
     {
+      id: '2',
       key: '2',
-      name: 'Jim Green',
+      name: '张三',
       age: 42,
-      address: 'London No. 1 Lake Park',
+      address: 'Janpan',
+      phone: '995',
       tags: ['loser'],
     },
     {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
+      id: '3',
+      key: '2',
+      name: '李四',
+      age: 18,
+      address: 'USA',
+      phone: '911',
+      tags: ['loser'],
     },
   ];
 
+  //删除信息确认对话框
+  function showDeleteConfirm() {
+    confirm({
+      title: '确认要删除这些数据吗?',
+      icon: <ExclamationCircleOutlined />,
+      //弹窗内容显示删除的数据信息
+      content: batchOverview(),
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
   const searchLayout = () => {};
+  const batchOverview = () => {
+    let slice = columns.slice(0, 2);
+    console.log(slice);
+    return <Table columns={slice} dataSource={selectedRows} rowKey="id" size="small" />;
+  };
   const beforeTableLayout = () => {
     return (
       <Row>
@@ -95,7 +142,14 @@ const TableList = () => {
           ...
         </Col>
         <Col xs={24} sm={12} className={styles.tableToolbar}>
-          <Button type="primary">添加</Button>
+          <Button
+            type="primary"
+            onClick={() => {
+              setIsModalVisible(true);
+            }}
+          >
+            添加
+          </Button>
         </Col>
       </Row>
     );
@@ -111,7 +165,7 @@ const TableList = () => {
             showSizeChanger
             onShowSizeChange={onShowSizeChange}
             defaultCurrent={3}
-            total={500}
+            total={50}
           />
         </Col>
       </Row>
@@ -120,14 +174,59 @@ const TableList = () => {
   function onShowSizeChange(current, pageSize) {
     console.log(current, pageSize);
   }
+
+  //批量删除
+  const rowSelection = {
+    //标志着有无数据被选中
+    selectedRowKeys: selectedRowKeys,
+    onChange: (_selectedRowKeys, _selectedRows) => {
+      setSelectedRowKeys(_selectedRowKeys);
+      setSelectedRows(_selectedRows);
+    },
+  };
+  const batchToolbar = () => {
+    // React 不会渲染 null
+    return selectedRowKeys.length ? (
+      <Space>
+        <Button
+          type="primary"
+          danger
+          onClick={() => {
+            showDeleteConfirm();
+          }}
+        >
+          Delete
+        </Button>
+        <Button type="primary">Cancle</Button>
+      </Space>
+    ) : null;
+  };
+
   return (
     <PageContainer>
       {searchLayout()}
       <Card>
         {beforeTableLayout()}
-        <Table dataSource={data} columns={columns} pagination={false} />
+        <Table
+          rowKey="id"
+          dataSource={data}
+          columns={columns}
+          pagination={false}
+          rowSelection={rowSelection}
+        />
         {afterTableLayout()}
       </Card>
+      {/* 母页面控制对话框的显示与否 */}
+      <Modal
+        modalVisible={isModalVisible}
+        hideModal={() => {
+          setIsModalVisible(false);
+        }}
+      />
+      <FooterToolbar
+        //extra属性可以实现左侧显示
+        extra={batchToolbar()}
+      />
     </PageContainer>
   );
 };

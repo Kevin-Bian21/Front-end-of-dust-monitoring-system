@@ -73,7 +73,7 @@ export const layout = ({ initialState, setInitialState }) => {
         ]
       : [],
     menuHeaderRender: undefined,
-    iconfontUrl: '//at.alicdn.com/t/font_3358573_ytukw5wjtnc.js',
+    iconfontUrl: '//at.alicdn.com/t/font_3358573_jdu2npyngt.js',
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
