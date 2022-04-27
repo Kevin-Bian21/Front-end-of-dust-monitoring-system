@@ -48,9 +48,9 @@ export default [
   },
   {
     name: 'list.table-list',
-    icon: 'table',
+    icon: 'icon-yonghuguanli',
     path: '/list',
-    component: './TableList',
+    component: './table/tableList',
   },
   {
     path: '/',
