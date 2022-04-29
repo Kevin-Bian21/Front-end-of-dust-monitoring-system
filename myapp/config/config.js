@@ -47,7 +47,14 @@ export default defineConfig({
   esbuild: {},
   title: false,
   ignoreMomentLocale: true,
-  proxy: proxy[REACT_APP_ENV || 'dev'],
+  proxy: {
+    '/api': {
+      target: 'https://bianwenkai.oss-cn-beijing.aliyuncs.com',
+      changeOrigin: true,
+      pathRewrite: { '^api': '' },
+    },
+  },
+  // proxy[REACT_APP_ENV || 'dev']
   manifest: {
     basePath: '/',
   },
