@@ -3,6 +3,7 @@ import * as echarts from 'echarts/lib/echarts';
 import ReactEcharts from 'echarts-for-react';
 //import axios from 'axios';
 import jQuery from 'jquery';
+import { color } from 'echarts';
 window.$ = jQuery;
 
 class DeviceMap extends React.Component {
@@ -16,6 +17,8 @@ class DeviceMap extends React.Component {
     var option;
 
     $.get('api/img/iceland_svg.svg', function (svg) {
+      let color_c = 'red';
+      let flag = false;
       echarts.registerMap('iceland_svg', { svg: svg });
       option = {
         tooltip: {},
@@ -32,7 +35,7 @@ class DeviceMap extends React.Component {
           geoIndex: 0,
           zlevel: 1,
           data: [
-            [488.2358421078053, 459.70913833075736, 100],
+            [128.2358421078053, 459.70913833075736, 100],
             [770.3415644319939, 757.9672194986475, 30],
             [1180.0329284196291, 743.6141808346214, 80],
             [894.03790632245, 1188.1985153835008, 61],
@@ -100,7 +103,7 @@ class DeviceMap extends React.Component {
                     height: 40,
                   },
                   style: {
-                    fill: 'red',
+                    fill: color_c,
                   },
                   // Jump animation.
                   keyframeAnimation: {
@@ -126,6 +129,16 @@ class DeviceMap extends React.Component {
           },
         },
       };
+
+      myChart.on('click', { series: 'circle' }, function (params) {
+        if (flag) {
+          color_c = 'green';
+        } else {
+          color_c = 'blue';
+        }
+        console.log(flag);
+        flag = !flag;
+      });
       myChart.setOption(option);
     });
   };

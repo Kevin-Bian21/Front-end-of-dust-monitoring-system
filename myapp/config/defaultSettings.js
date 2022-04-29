@@ -12,6 +12,6 @@ const Settings = {
   splitMenus: false,
   pwa: false,
   logo: 'https://bianwenkai.oss-cn-beijing.aliyuncs.com/img/智慧矿山.svg',
-  iconfontUrl: 'https://bianwenkai.oss-cn-beijing.aliyuncs.com/img/智慧矿山.svg',
+  iconfontUrl: '//at.alicdn.com/t/font_3358573_jdu2npyngt.js',
 };
 export default Settings;

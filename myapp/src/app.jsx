@@ -60,20 +60,8 @@ export const layout = ({ initialState, setInitialState }) => {
         history.push(loginPath);
       }
     },
-    links: isDev
-      ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            {/* <span>OpenAPI 文档</span> */}
-          </Link>,
-          <Link to="/~docs" key="docs">
-            <BookOutlined />
-            {/* <span>业务组件文档</span> */}
-          </Link>,
-        ]
-      : [],
     menuHeaderRender: undefined,
-    iconfontUrl: '//at.alicdn.com/t/font_3358573_jdu2npyngt.js',
+    //  iconfontUrl: '//at.alicdn.com/t/font_3358573_jdu2npyngt.js',
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态

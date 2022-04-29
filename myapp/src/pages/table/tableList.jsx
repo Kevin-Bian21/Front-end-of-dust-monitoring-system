@@ -1,10 +1,30 @@
 import React, { useState } from 'react';
-import { Table, Tag, Space, Pagination, Button, Row, Col, Card, Modal as AntdModal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+  Table,
+  Tag,
+  Space,
+  Pagination,
+  Button,
+  Row,
+  Col,
+  Card,
+  Modal as AntdModal,
+  Tooltip,
+  Form,
+  InputNumber,
+  Input,
+  DatePicker,
+} from 'antd';
+import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRequest } from 'umi';
 import styles from './tableList.less';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { useToggle, useUpdateEffect } from 'ahooks';
+import moment from 'moment';
+import QueueAnim from 'rc-queue-anim';
 import Modal from './components/Modal';
+
+//import SearchBuilder from './builder/searchBuilder';
 
 const TableList = () => {
   const [page, setPage] = useState(1);
@@ -13,6 +33,9 @@ const TableList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const { confirm } = AntdModal;
+  const [searchVisible, searchAction] = useToggle(true);
+  const [searchForm] = Form.useForm();
+  const { RangePicker } = DatePicker;
 
   const columns = [
     {
@@ -71,7 +94,8 @@ const TableList = () => {
             danger
             size="small"
             onClick={() => {
-              showDeleteConfirm();
+              console.log(record);
+              showDeleteConfirm(record);
             }}
           >
             删除
@@ -111,12 +135,12 @@ const TableList = () => {
   ];
 
   //删除信息确认对话框
-  function showDeleteConfirm() {
+  function showDeleteConfirm(record) {
     confirm({
       title: '确认要删除这些数据吗?',
       icon: <ExclamationCircleOutlined />,
-      //弹窗内容显示删除的数据信息
-      content: batchOverview(),
+      //弹窗内容显示删除的数据信息,单独删除和批量删除的回显数据不同，优先级也不一样
+      content: batchOverview(Object.keys(record).length ? [record] : selectedRows),
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
@@ -129,11 +153,65 @@ const TableList = () => {
     });
   }
 
-  const searchLayout = () => {};
-  const batchOverview = () => {
+  const batchOverview = (dataSource) => {
     let slice = columns.slice(0, 2);
     console.log(slice);
-    return <Table columns={slice} dataSource={selectedRows} rowKey="id" size="small" />;
+    return (
+      <Table columns={slice} dataSource={dataSource} rowKey="id" size="small" pagination={false} />
+    );
+  };
+
+  //顶部搜索框
+  const searchLayout = () => {
+    return (
+      <QueueAnim type="top">
+        {searchVisible && (
+          <div>
+            <Card className={styles.searchForm}>
+              <Form>
+                <Row>
+                  <Col sm={6}>
+                    <Form.Item
+                      label="全表搜索"
+                      name="search"
+                      rules={[{ required: false, message: 'Please input your username!' }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col sm={12}>
+                    <Form.Item label="创建时间">
+                      <DatePicker.RangePicker
+                        showTime
+                        style={{ width: '100%' }}
+                        ranges={{
+                          Today: [moment().startOf('day'), moment().endOf('day')],
+                          'Last 7 Days': [moment().subtract(7, 'd'), moment()],
+                          'Last 30 Days': [moment().subtract(30, 'days'), moment()],
+                          'Last Month': [
+                            moment().subtract(1, 'months').startOf('month'),
+                            moment().subtract(1, 'months').endOf('month'),
+                          ],
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col sm={1} />
+                  <Col sm={4}>
+                    <Space>
+                      <Button>搜索</Button>
+                      <Button>重置</Button>
+                    </Space>
+                  </Col>
+
+                  {/* {SearchBuilder(columns)} */}
+                </Row>
+              </Form>
+            </Card>
+          </div>
+        )}
+      </QueueAnim>
+    );
   };
   const beforeTableLayout = () => {
     return (
@@ -142,14 +220,26 @@ const TableList = () => {
           ...
         </Col>
         <Col xs={24} sm={12} className={styles.tableToolbar}>
-          <Button
-            type="primary"
-            onClick={() => {
-              setIsModalVisible(true);
-            }}
-          >
-            添加
-          </Button>
+          <Space>
+            <Tooltip title="search">
+              <Button
+                shape="circle"
+                icon={<SearchOutlined />}
+                onClick={() => {
+                  searchAction.toggle();
+                }}
+                type={searchVisible ? 'primary' : 'default'}
+              />
+            </Tooltip>
+            <Button
+              type="primary"
+              onClick={() => {
+                setIsModalVisible(true);
+              }}
+            >
+              添加
+            </Button>
+          </Space>
         </Col>
       </Row>
     );
@@ -184,6 +274,10 @@ const TableList = () => {
       setSelectedRows(_selectedRows);
     },
   };
+  // const rowCancleSelection = {
+  //   selectedRowKeys: selectedRowKeys,
+  //   setSelectedRows([]);
+  // };
   const batchToolbar = () => {
     // React 不会渲染 null
     return selectedRowKeys.length ? (
@@ -192,12 +286,20 @@ const TableList = () => {
           type="primary"
           danger
           onClick={() => {
-            showDeleteConfirm();
+            showDeleteConfirm({});
           }}
         >
           Delete
         </Button>
-        <Button type="primary">Cancle</Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            selectedRowKeys: [];
+            selectedRows: [];
+          }}
+        >
+          Cancle
+        </Button>
       </Space>
     ) : null;
   };
