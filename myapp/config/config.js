@@ -51,7 +51,7 @@ export default defineConfig({
     '/api': {
       target: 'https://bianwenkai.oss-cn-beijing.aliyuncs.com',
       changeOrigin: true,
-      pathRewrite: { '^api': '' },
+      pathRewrite: { '^/api': '' },
     },
   },
   // proxy[REACT_APP_ENV || 'dev']
