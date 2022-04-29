@@ -35,7 +35,7 @@ const Page = () => {
             </div>
           </Col>
           <Col span={4}>
-            <div style={style}>
+            <div>
               <DeviceMap />
             </div>
           </Col>
