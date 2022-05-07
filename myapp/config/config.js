@@ -49,7 +49,7 @@ export default defineConfig({
   ignoreMomentLocale: true,
   proxy: {
     '/api': {
-      target: 'https://bianwenkai.oss-cn-beijing.aliyuncs.com',
+      target: 'http://localhost:8080/',
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
     },

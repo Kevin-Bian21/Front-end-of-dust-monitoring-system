@@ -16,17 +16,17 @@ class DeviceMap extends React.Component {
     var myChart = echarts.init(chartDom);
     var option;
 
-    $.get('api/img/iceland_svg.svg', function (svg) {
+    $.get('api/static/img/iceland.svg', function (svg) {
       let color_c = 'red';
       let flag = false;
-      echarts.registerMap('iceland_svg', { svg: svg });
+      echarts.registerMap('iceland', { svg: svg });
       option = {
         tooltip: {},
         geo: {
           tooltip: {
             show: true,
           },
-          map: 'iceland_svg',
+          map: 'iceland',
           roam: true,
         },
         series: {

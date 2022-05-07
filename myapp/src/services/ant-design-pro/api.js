@@ -13,15 +13,16 @@ export async function currentUser(options) {
 /** 退出登录接口 POST /api/login/outLogin */
 
 export async function outLogin(options) {
-  return request('/api/login/outLogin', {
-    method: 'POST',
+  return request('/api/login/Logout', {
+    method: 'GET',
     ...(options || {}),
   });
 }
 /** 登录接口 POST /api/login/account */
 
 export async function login(body, options) {
-  return request('/api/login/account', {
+  console.log(body);
+  return request('/api/api/Login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
