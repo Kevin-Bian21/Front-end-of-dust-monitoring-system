@@ -21,6 +21,8 @@ export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
       const currentUser = await queryCurrentUser();
+      console.log('test', currentUser);
+      console.log(history.location.pathname);
       return currentUser;
     } catch (error) {
       history.push(loginPath);
@@ -29,17 +31,21 @@ export async function getInitialState() {
     return undefined;
   }; // 如果不是登录页面，执行
 
-  if (history.location.pathname !== loginPath && history.location.pathname !== '/api') {
+  // console.log('fetchUserInfo', fetchUserInfo);
+
+  if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
+    console.log('as', currentUser);
     return {
       fetchUserInfo,
       currentUser,
+      //settings: defaultSettings,
       settings: defaultSettings,
     };
   }
 
   return {
-    name: '张三',
+    //name: '张三',
     fetchUserInfo,
     settings: defaultSettings,
   };

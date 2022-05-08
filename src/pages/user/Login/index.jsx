@@ -32,7 +32,6 @@ const goto = () => {
   setTimeout(() => {
     const { query } = history.location;
     console.log(history.location);
-    console.log({ query });
 
     const { redirect } = query;
     console.log({ redirect });

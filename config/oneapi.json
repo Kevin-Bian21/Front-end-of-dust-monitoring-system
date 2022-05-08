@@ -302,86 +302,22 @@
       "CurrentUser": {
         "type": "object",
         "properties": {
-          "name": {
+          "userName": {
             "type": "string"
           },
           "avatar": {
             "type": "string"
           },
-          "userid": {
+          "userId": {
             "type": "string"
           },
           "email": {
             "type": "string"
           },
-          "signature": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
           "group": {
             "type": "string"
           },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "key": {
-                  "type": "string"
-                },
-                "label": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "notifyCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "unreadCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "country": {
-            "type": "string"
-          },
           "access": {
-            "type": "string"
-          },
-          "geographic": {
-            "type": "object",
-            "properties": {
-              "province": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "key": {
-                    "type": "string"
-                  }
-                }
-              },
-              "city": {
-                "type": "object",
-                "properties": {
-                  "label": {
-                    "type": "string"
-                  },
-                  "key": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "address": {
-            "type": "string"
-          },
-          "phone": {
             "type": "string"
           }
         }
