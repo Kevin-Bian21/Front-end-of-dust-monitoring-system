@@ -34,7 +34,6 @@ const goto = () => {
     console.log(history.location);
 
     const { redirect } = query;
-    console.log({ redirect });
     history.push(redirect ? `/admin/${redirect}` : '/');
     console.log(history.location);
   }, 10);
@@ -70,6 +69,8 @@ const Login = () => {
           defaultMessage: '登录成功！',
         });
         message.success(defaultLoginSuccessMessage);
+        localStorage.setItem('token', msg.token);
+
         await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
 
@@ -80,9 +81,7 @@ const Login = () => {
         goto();
         return;
       }
-
-      console.log(msg); // 如果失败去设置用户错误信息
-
+      // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({

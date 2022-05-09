@@ -17,6 +17,20 @@ export const initialStateConfig = {
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 
+//登录后请求后端都带上token
+const addToken = (url, options) => {
+  options.headers = {
+    Authorization: localStorage.getItem('token'),
+  };
+  return {
+    url,
+    options,
+  };
+};
+export const request = {
+  requestInterceptors: [addToken],
+};
+
 export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
@@ -35,11 +49,9 @@ export async function getInitialState() {
 
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
-    console.log('as', currentUser);
     return {
       fetchUserInfo,
       currentUser,
-      //settings: defaultSettings,
       settings: defaultSettings,
     };
   }
