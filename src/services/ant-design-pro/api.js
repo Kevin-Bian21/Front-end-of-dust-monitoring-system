@@ -32,9 +32,13 @@ export async function login(body, options) {
   });
 }
 
-export async function getEnvData(options) {
+export async function getEnvData(body, options) {
   return request('/api/presentEnvData', {
-    method: 'GET',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
