@@ -52,7 +52,12 @@ export default defineConfig({
     '/api': {
       target: 'http://localhost:8080/',
       changeOrigin: true,
-      pathRewrite: { '^/api': '' },
+      pathRewrite: { '^': '' },
+    },
+    '/static': {
+      target: 'http://localhost:8080/',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
     },
   },
   // proxy: proxy[REACT_APP_ENV || 'dev'],

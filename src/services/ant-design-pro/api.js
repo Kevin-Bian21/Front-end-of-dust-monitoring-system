@@ -5,7 +5,7 @@ import { request } from 'umi';
 /** 获取当前的用户 GET /api/currentUser */
 
 export async function currentUser(options) {
-  return request('/api/admins/currentUser', {
+  return request('/api/currentUser', {
     method: 'GET',
     ...(options || {}),
   });
@@ -13,7 +13,7 @@ export async function currentUser(options) {
 /** 退出登录接口 POST /api/login/outLogin */
 
 export async function outLogin(options) {
-  return request('/api/login/Logout', {
+  return request('/api/logout', {
     method: 'GET',
     ...(options || {}),
   });
@@ -22,7 +22,7 @@ export async function outLogin(options) {
 
 export async function login(body, options) {
   console.log(body);
-  return request('/api/admins/Login', {
+  return request('/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -31,6 +31,14 @@ export async function login(body, options) {
     ...(options || {}),
   });
 }
+
+export async function getEnvData(options) {
+  return request('/api/presentEnvData', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 
 export async function getNotices(options) {

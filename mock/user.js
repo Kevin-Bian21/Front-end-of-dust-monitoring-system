@@ -26,7 +26,7 @@ const getAccess = () => {
 
 export default {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': (req, res) => {
+  'GET /api/currentUsersdfd': (req, res) => {
     if (!getAccess()) {
       res.status(401).send({
         data: {

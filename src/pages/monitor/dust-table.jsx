@@ -1,35 +1,54 @@
 import React from 'react';
-import { Table, Tag, Space } from 'antd';
+import { Table, Tag, Space, Button } from 'antd';
 import moment from 'moment';
+import { useRequest } from 'umi';
+import { getEnvData } from '@/services/ant-design-pro/api';
 
 const DustInfoTable = () => {
+  const init = useRequest('/api/presentEnvData');
+  console.log(init);
+
   const columns = [
     {
-      title: '粉尘浓度(m^3)',
-      dataIndex: 'dust',
-      key: 'dust',
+      title: '粉尘浓度(g/m³)',
+      dataIndex: 'dustDensity',
+      key: 'dustDensity',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: '位置',
-      dataIndex: 'local',
-      key: 'local',
+      title: '监测位置',
+      dataIndex: 'monitorLocal',
+      key: 'monitorLocal',
+    },
+
+    {
+      title: '温度(℃)',
+      dataIndex: 'temperature',
+      key: 'temperature',
+    },
+    {
+      title: '湿度(%)',
+      dataIndex: 'humidity',
+      key: 'humidity',
+    },
+    {
+      title: '风速(%)',
+      dataIndex: 'windSpeed',
+      key: 'windSpeed',
     },
     {
       title: '预警等级',
-      dataIndex: 'level',
-      key: 'level',
-    },
-    {
-      title: 'Tags',
       key: 'tags',
       dataIndex: 'tags',
       render: (tags) => (
         <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
+          {(tags || []).map((tag) => {
+            let color = 'green';
             if (tag === '严重') {
               color = 'volcano';
+            }
+            if (tag === '良好') {
+              color = 'blue';
             }
             return (
               <Tag color={color} key={tag}>
@@ -40,10 +59,11 @@ const DustInfoTable = () => {
         </>
       ),
     },
+
     {
-      title: '时间',
-      dataIndex: 'time',
-      key: 'time',
+      title: '监测时间',
+      dataIndex: 'monitorDateTime',
+      key: 'monitorDateTime',
     },
   ];
   const getNowDate = () => {
@@ -51,29 +71,17 @@ const DustInfoTable = () => {
     return time;
   };
 
-  const data = [
-    {
-      dust: '10mg',
-      local: '一号矿井',
-      level: '一级',
-      tags: ['严重'],
-      time: getNowDate(),
-    },
-    {
-      dust: '1000mg',
-      local: '二号矿井',
-      level: '一级',
-      tags: ['严重'],
-      time: '2022-04-25 11:58:59',
-    },
-    {
-      dust: '10mg',
-      local: '三号矿井',
-      level: '三级',
-      tags: ['优良'],
-      time: getNowDate(),
-    },
-  ];
-  return <Table columns={columns} dataSource={data} />;
+  return (
+    <div>
+      <Button type="primary">提交</Button>
+      <Table
+        columns={columns}
+        dataSource={init?.data}
+        pagination={false}
+        size="small"
+        sortDirections="descend"
+      />
+    </div>
+  );
 };
 export default DustInfoTable;

@@ -36,7 +36,7 @@ export async function getInitialState() {
     try {
       const currentUser = await queryCurrentUser();
       console.log('test', currentUser);
-      console.log(history.location.pathname);
+      // console.log(history.location.pathname);
       return currentUser;
     } catch (error) {
       history.push(loginPath);
@@ -46,7 +46,7 @@ export async function getInitialState() {
   }; // 如果不是登录页面，执行
 
   // console.log('fetchUserInfo', fetchUserInfo);
-
+  console.log(history.location.pathname);
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
     return {
@@ -57,7 +57,6 @@ export async function getInitialState() {
   }
 
   return {
-    //name: '张三',
     fetchUserInfo,
     settings: defaultSettings,
   };
@@ -68,7 +67,7 @@ export const layout = ({ initialState, setInitialState }) => {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.userName,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {

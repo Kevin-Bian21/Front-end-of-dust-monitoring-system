@@ -47,10 +47,10 @@ const Temperature = () => {
         },
       },
       content: {
-        offsetY: 36,
+        offsetY: -40,
         style: {
           fontSize: '24px',
-          color: '#4B535E',
+          color: '#6395f9',
         },
         formatter: () => '温度',
       },

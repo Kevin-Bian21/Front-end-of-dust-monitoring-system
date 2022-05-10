@@ -4,6 +4,8 @@ import { Liquid } from '@ant-design/plots';
 import { Statistic, Card, Row, Col } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import Styles from './dust-chart.less';
+import Temperature from './temperature';
+import DeviceMap from './device-map';
 
 const DemoLiquid = () => {
   const config = {
@@ -52,35 +54,56 @@ const StatisticData = () => (
 );
 
 const MonitorCard = () => (
-  <div className={Styles.cardwrapper}>
-    <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
-      <Col span={4}>
-        <Card
-          title="设备运行状况"
-          bordered={false}
-          hoverable={true}
-          size={'small'}
-          //style={{ width: 200, height: 200 }}
-        >
-          <div style={{ height: 140 }}>
-            <DemoLiquid />
-          </div>
-        </Card>
-      </Col>
-      <Col span={8}>
-        <Card
-          title="预警次数"
-          bordered={false}
-          hoverable={true}
-          size={'small'}
-          //style={{ width: 200, height: 200 }}
-        >
-          <div style={{ height: 140 }}>
-            <StatisticData />
-          </div>
-        </Card>
-      </Col>
-    </Row>
+  <div>
+    <div className={Styles.cardwrapper}>
+      <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
+        <Col span={8}>
+          <Card
+            title="设备运行状况"
+            bordered={false}
+            hoverable={true}
+            size={'small'}
+            //style={{ width: 200, height: 200 }}
+          >
+            <div style={{ height: 140 }}>
+              <DemoLiquid />
+            </div>
+          </Card>
+        </Col>
+        <Col span={16}>
+          <Card
+            title="预警次数"
+            bordered={false}
+            hoverable={true}
+            size={'small'}
+            //style={{ width: 200, height: 200 }}
+          >
+            <div style={{ height: 140 }}>
+              <StatisticData />
+            </div>
+          </Card>
+        </Col>
+      </Row>
+    </div>
+    <div className={Styles.cardwrapper}>
+      <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
+        <Col span={24}>
+          <Card
+            title="粉尘喷雾部署图"
+            bordered={false}
+            // hoverable={true}
+            size={'small'}
+            headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
+            // loading="true"
+            style={{ height: 500 }}
+          >
+            <div style={{ height: 430 }}>
+              <DeviceMap />
+            </div>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   </div>
 );
 

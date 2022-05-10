@@ -2,6 +2,7 @@ import React from 'react';
 import * as echarts from 'echarts/lib/echarts';
 import ReactEcharts from 'echarts-for-react';
 //import axios from 'axios';
+import { Col, Row, Card } from 'antd';
 import jQuery from 'jquery';
 import { color } from 'echarts';
 window.$ = jQuery;
@@ -16,7 +17,7 @@ class DeviceMap extends React.Component {
     var myChart = echarts.init(chartDom);
     var option;
 
-    $.get('api/static/img/iceland.svg', function (svg) {
+    $.get('static/img/iceland.svg', function (svg) {
       let color_c = 'red';
       let flag = false;
       echarts.registerMap('iceland', { svg: svg });
@@ -156,7 +157,7 @@ class DeviceMap extends React.Component {
   // };
 
   render() {
-    return <div id="main" style={{ width: '800px', height: '250px' }}></div>;
+    return <div id="main" style={{ height: 430 }}></div>;
   }
 }
 

@@ -1,39 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Column } from '@ant-design/plots';
+import { Card } from 'antd';
 
 const Histogram = () => {
   const data = [
     {
-      type: '一号矿井',
+      type: '一号监测点',
       value: 80,
     },
     {
-      type: '二号矿井',
+      type: '二号监测点',
       value: 50,
     },
     {
-      type: '三号矿井',
+      type: '三号监测点',
       value: 185,
     },
     {
-      type: '四号矿井',
+      type: '四号监测点',
       value: 57,
     },
     {
-      type: '五号矿井',
+      type: '五号监测点',
       value: 108,
     },
     {
-      type: '六号矿井',
+      type: '六号监测点',
       value: 73,
     },
     {
-      type: '七号矿井',
+      type: '七号监测点',
       value: 193,
     },
     {
-      type: '八号矿井',
+      type: '八号监测点',
       value: 32,
     },
   ];
