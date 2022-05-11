@@ -115,7 +115,9 @@ const DustInfoTable = () => {
   // };
   // document.addEventListener(visibilityChangeEvent, onVisibilityChange);
 
-  const onFinishFailed = (values) => {};
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
   return (
     <div>
@@ -187,7 +189,7 @@ const DustInfoTable = () => {
                 headStyle={{ textAlign: 'center' }}
                 // loading="true"
               >
-                <HistogramChart histogramData={data[1]} />
+                <HistogramChart histogramData={data[1]} limitValue={value} />
               </Card>
             </div>
           </Col>

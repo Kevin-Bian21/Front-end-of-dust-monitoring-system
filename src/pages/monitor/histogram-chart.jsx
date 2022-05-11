@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Column } from '@ant-design/plots';
 import { Card } from 'antd';
+import { history } from 'umi';
 
 const HistogramChart = (props) => {
   const data = props.histogramData || [];
+  const limitValue = props.limitValue || [];
 
   const config = {
     data,
@@ -34,6 +36,15 @@ const HistogramChart = (props) => {
       ],
     },
   };
-  return <Column {...config} />;
+
+  // plot 添加点击事件,整个图表区域
+  const onShowLineChart = (plot) => {
+    plot.on('element:click', (...args) => {
+      const local = args[0].data?.data?.local;
+      history.push({ pathname: `/dust-chart/line-chart`, state: local, query: { limitValue } });
+    });
+  };
+
+  return <Column {...config} onReady={onShowLineChart} />;
 };
 export default HistogramChart;

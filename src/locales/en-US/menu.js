@@ -1,6 +1,7 @@
 export default {
   'menu.welcome': 'Welcome',
   'menu.panel': 'Monitoring panel',
+  'menu.lineChart': 'line chart',
   'menu.more-blocks': 'More Blocks',
   'menu.home': 'Home',
   'menu.admin': 'Admin',

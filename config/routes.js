@@ -41,6 +41,14 @@ export default [
     ],
   },
   {
+    name: 'lineChart',
+    hideInMenu: true,
+    component: './monitor/line-chart',
+    path: '/dust-chart/line-chart',
+    //   access: 'canAdmin',
+    //routes: [{ exact: true }],
+  },
+  {
     path: '/dust-chart',
     component: './monitor/dust-chart',
     name: 'panel',
@@ -48,12 +56,14 @@ export default [
     //   access: 'canAdmin',
     //routes: [{ exact: true }],
   },
+
   {
     name: 'list.table-list',
     icon: 'icon-yonghuguanli',
     path: '/list',
     component: './table/tableList',
   },
+
   {
     path: '/',
     redirect: '/welcome',
