@@ -3,26 +3,14 @@ import ReactDOM from 'react-dom';
 import { Column } from '@ant-design/plots';
 import { Card } from 'antd';
 
-const Histogram = () => {
-  const [data, setData] = useState([]);
+const HistogramChart = (props) => {
+  const data = props.histogramData || [];
 
-  useEffect(() => {
-    asyncFetch();
-  }, []);
-
-  const asyncFetch = () => {
-    fetch('https://gw.alipayobjects.com/os/antfincdn/PC3daFYjNw/column-data.json')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log('fetch data failed', error);
-      });
-  };
   const config = {
     data,
     height: 245,
     isGroup: 'true',
-    xField: 'monitorLocal',
+    xField: 'local',
     yField: 'value',
     seriesField: 'type',
     // 分组柱状图 组内柱子间的间距 (像素级别)
@@ -46,7 +34,6 @@ const Histogram = () => {
       ],
     },
   };
-
   return <Column {...config} />;
 };
-export default Histogram;
+export default HistogramChart;

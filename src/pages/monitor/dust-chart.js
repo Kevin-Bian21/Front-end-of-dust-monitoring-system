@@ -4,7 +4,7 @@ import { Column, Gauge } from '@ant-design/plots';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Row, Col, Space, Divider, Card } from 'antd';
 import DustInfoTable from './dust-table';
-import Histogram from './Histogram';
+import HistogramChart from './histogram-chart';
 import Temperature from './temperature';
 import DeviceMap from './device-map';
 import MonitorCard from './monitor-card';
@@ -26,24 +26,8 @@ const Page = () => {
           </Col>
           <Col span={12}>
             <DemoBox value={150}>
-              <div className={Styles.dustInfoTableWrapper}>
-                <DustInfoTable />
-              </div>
+              <DustInfoTable />
             </DemoBox>
-            <Row>
-              <Col span={24}>
-                <div className={Styles.histogramWrapper}>
-                  <Card
-                    title="当前环境各监测点粉尘浓度直方图"
-                    size={'small'}
-                    headStyle={{ textAlign: 'center' }}
-                    // loading="true"
-                  >
-                    <Histogram />
-                  </Card>
-                </div>
-              </Col>
-            </Row>
           </Col>
         </Row>
 
