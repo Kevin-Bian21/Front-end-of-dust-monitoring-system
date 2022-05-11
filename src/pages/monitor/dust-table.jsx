@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Table, Tag, Space, Button, Input, Form } from 'antd';
+import { Table, Tag, Space, Button, Input, Form, Tooltip } from 'antd';
 import moment from 'moment';
 import { useRequest } from 'umi';
 import { getEnvData } from '@/services/ant-design-pro/api';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const DustInfoTable = () => {
   const [data, setData] = useState([]);
@@ -69,6 +70,7 @@ const DustInfoTable = () => {
   };
 
   const onFinish = async (values) => {
+    console.log(values);
     //将用户上一次设置的值保存下来，然后用该预警值去每10秒请求一次后端接口
     Object.assign(value, values);
 
@@ -120,9 +122,18 @@ const DustInfoTable = () => {
             <Input placeholder="温度" />
           </Form.Item>
           <Form.Item>
-            <Button htmlType="submit" type="primary">
-              提交
-            </Button>
+            <Space>
+              <Button htmlType="submit" type="primary">
+                提交
+              </Button>
+              <Tooltip
+                title="默认预警值：粉尘浓度50g,温度30℃"
+                color="gray"
+                style={{ paddingLeft: 1000 }}
+              >
+                <ExclamationCircleOutlined />
+              </Tooltip>
+            </Space>
           </Form.Item>
         </Space>
       </Form>

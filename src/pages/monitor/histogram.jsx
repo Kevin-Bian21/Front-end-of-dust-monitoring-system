@@ -4,75 +4,49 @@ import { Column } from '@ant-design/plots';
 import { Card } from 'antd';
 
 const Histogram = () => {
-  const data = [
-    {
-      type: '一号监测点',
-      value: 80,
-    },
-    {
-      type: '二号监测点',
-      value: 50,
-    },
-    {
-      type: '三号监测点',
-      value: 185,
-    },
-    {
-      type: '四号监测点',
-      value: 57,
-    },
-    {
-      type: '五号监测点',
-      value: 108,
-    },
-    {
-      type: '六号监测点',
-      value: 73,
-    },
-    {
-      type: '七号监测点',
-      value: 193,
-    },
-    {
-      type: '八号监测点',
-      value: 32,
-    },
-  ];
-  const paletteSemanticRed = '#F4664A';
-  const brandColor = '#5B8FF9';
-  const config = {
-    height: 250,
-    data,
-    xField: 'type',
-    yField: 'value',
-    //配置柱状图颜色时使用的条件
-    seriesField: 'value',
-    label: {
-      content: (originData) => {
-        const val = parseFloat(originData.value);
-        //        console.log(originData);
-        if (val < 0.05) {
-          return (val * 100).toFixed(1) + '%';
-        }
-      },
-      offset: 10,
-    },
-    color: ({ value }) => {
-      //      console.log(value);
-      if (value > 150) {
-        return paletteSemanticRed;
-      }
+  const [data, setData] = useState([]);
 
-      return brandColor;
-    },
-    legend: false,
-    xAxis: {
-      label: {
-        autoHide: false,
-        autoRotate: false,
-      },
+  useEffect(() => {
+    asyncFetch();
+  }, []);
+
+  const asyncFetch = () => {
+    fetch('https://gw.alipayobjects.com/os/antfincdn/PC3daFYjNw/column-data.json')
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => {
+        console.log('fetch data failed', error);
+      });
+  };
+  const config = {
+    data,
+    height: 245,
+    isGroup: 'true',
+    xField: 'monitorLocal',
+    yField: 'value',
+    seriesField: 'type',
+    // 分组柱状图 组内柱子间的间距 (像素级别)
+    dodgePadding: 2,
+    label: {
+      // 可手动配置 label 数据标签位置
+      position: 'middle',
+      // 'top', 'middle', 'bottom'
+      // 可配置附加的布局方法
+      layout: [
+        // 柱形图数据标签位置自动调整
+        {
+          type: 'interval-adjust-position',
+        }, // 数据标签防遮挡
+        {
+          type: 'interval-hide-overlap',
+        }, // 数据标签文颜色自动调整
+        {
+          type: 'adjust-color',
+        },
+      ],
     },
   };
+
   return <Column {...config} />;
 };
 export default Histogram;
