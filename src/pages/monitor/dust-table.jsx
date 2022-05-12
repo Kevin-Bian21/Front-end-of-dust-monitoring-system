@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Table, Tag, Space, Button, Input, Form, Tooltip, Row, Col, Card } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Table, Tag, Space, Button, Input, Form, Tooltip, Row, Col, Card, message } from 'antd';
 import moment from 'moment';
 import { useRequest } from 'umi';
 import { getEnvData } from '@/services/ant-design-pro/api';
@@ -10,6 +10,75 @@ import Styles from './dust-chart.less';
 const DustInfoTable = () => {
   const [data, setData] = useState([]);
   const [value] = useState({});
+  const [websocket, setWebsocket] = useState({});
+
+  //第二个参数传递一个空数组时，仅在挂载和卸载DOM的时候执行
+  useEffect(() => {
+    async function fetchData() {
+      const initData = await getEnvData({});
+      setData(initData?.data);
+      openSocket();
+    }
+    fetchData();
+  }, []);
+
+  function openSocket() {
+    //创建WebSocket
+    var websocket;
+    if (typeof WebSocket == 'undefined') {
+      console.log('您的浏览器不支持WebSocket');
+    } else {
+      console.log('您的浏览器支持WebSocket');
+      let socketURL = `ws://localhost:8080/ws/${localStorage.getItem('token')}`;
+
+      if (websocket != null) {
+        websocket.close();
+        websocket = null;
+      }
+
+      websocket = new WebSocket(socketURL);
+      setWebsocket(websocket);
+      //打开事件
+      //打开事件
+      websocket.onopen = function () {
+        console.log(new Date() + 'websocket已打开，正在连接...');
+        //socket.send("这是来自客户端的消息" + location.href + new Date());
+      };
+      //发现消息进入
+      websocket.onmessage = function (msg) {
+        console.log('websocket已连接');
+        console.log(msg.data); // 第一次进去会显示：连接成功
+      };
+      //关闭事件
+      websocket.onclose = function () {
+        console.log('websocket已关闭');
+      };
+      //发生了错误事件
+      websocket.onerror = function () {
+        console.log('websocket发生了错误');
+      };
+      //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+      window.onbeforeunload = function () {
+        websocket.close();
+      };
+    }
+  }
+
+  // message = (msg) => {
+  //   console.log(msg.data);
+  // };
+
+  function sendMessage() {
+    if (typeof WebSocket == 'undefined') {
+      console.log('您的浏览器不支持WebSocket');
+    } else {
+      console.log('您的浏览器支持WebSocket');
+
+      // console.log(websocket);
+      // console.log(JSON.stringify(value));
+      websocket.send(JSON.stringify(value));
+    }
+  }
 
   const columns = [
     {
@@ -75,22 +144,26 @@ const DustInfoTable = () => {
     //将用户上一次设置的值保存下来，然后用该预警值去每10秒请求一次后端接口
     Object.assign(value, values);
 
+    //用户提交了数据后就通过socket传到后端
+    sendMessage();
+
     const envData = await getEnvData(values);
     if (envData) {
-      setData(envData.data);
+      setData(envData?.data);
       console.log(envData);
     }
   };
+  // const timer = setTimeout(getPresentData, 10000);
 
   async function getPresentData() {
+    console.log('dddddddd');
     const envData = await getEnvData(value);
     if (envData) {
-      setData(envData.data);
+      setData(envData?.data);
     }
   }
 
   //每隔 10s请求一次后端接口获取最新数据
-  const timer = setTimeout(getPresentData, 10000);
 
   // var hiddenProperty =
   //   'hidden' in document

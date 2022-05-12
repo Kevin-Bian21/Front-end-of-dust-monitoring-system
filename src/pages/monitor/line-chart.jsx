@@ -4,6 +4,7 @@ import { Line } from '@ant-design/plots';
 import { Table, Tag, Space, Pagination, Row, Col, Card, Tooltip } from 'antd';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { history } from 'umi';
+import ReactEcharts from 'echarts-for-react';
 
 const DemoLine = () => {
   console.log(history.location);
@@ -13,51 +14,35 @@ const DemoLine = () => {
 
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    asyncFetch();
-  }, []);
+  const [sales, setSales] = useState([5, 20, 36, 10, 10, 20]);
+  const [stores, setStores] = useState([15, 120, 36, 110, 110, 20]);
 
-  const asyncFetch = () => {
-    fetch('https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log('fetch data failed', error);
-      });
-  };
-  const config = {
-    data,
-    padding: 'auto',
-    xField: 'year',
-    yField: 'value',
-    seriesField: 'category',
-    annotations: [
-      // 低于中位数颜色变化
-      {
-        type: 'regionFilter',
-        start: ['min', 'median'],
-        end: ['max', '0'],
-        color: '#F4664A',
+  const getOption = (sal, sto) => {
+    return {
+      title: {
+        text: 'ECharts 入门示例',
       },
-      {
-        type: 'text',
-        position: ['min', 'median'],
-        content: '中位数',
-        offsetY: -4,
-        style: {
-          textBaseline: 'bottom',
+      tooltip: {},
+      legend: {
+        data: ['销量', '库存'],
+      },
+      xAxis: {
+        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'],
+      },
+      yAxis: {},
+      series: [
+        {
+          name: '销量',
+          type: 'line',
+          data: sales,
         },
-      },
-      {
-        type: 'line',
-        start: ['min', 'median'],
-        end: ['max', 'median'],
-        style: {
-          stroke: '#F4664A',
-          lineDash: [2, 2],
+        {
+          name: '库存',
+          type: 'line',
+          data: stores,
         },
-      },
-    ],
+      ],
+    };
   };
 
   return (
@@ -66,7 +51,7 @@ const DemoLine = () => {
         title={lineTitle}
         headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
       >
-        <Line {...config} />
+        <ReactEcharts option={getOption(sales, stores)} />
       </Card>
     </PageContainer>
   );
