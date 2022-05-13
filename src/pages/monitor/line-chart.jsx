@@ -12,6 +12,8 @@ const DemoLine = () => {
   const params = history.location.state;
   const lineTitle = params + '24小时内数据变化折线图';
 
+  const limitValue = localStorage.getItem('limitValue');
+
   const [data, setData] = useState([]);
 
   const [sales, setSales] = useState([5, 20, 36, 10, 10, 20]);

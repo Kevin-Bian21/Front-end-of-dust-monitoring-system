@@ -43,6 +43,13 @@ export async function getEnvData(body, options) {
   });
 }
 
+export async function getUserInfo(options) {
+  return request('/api/allUserInfo', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 
 export async function getNotices(options) {

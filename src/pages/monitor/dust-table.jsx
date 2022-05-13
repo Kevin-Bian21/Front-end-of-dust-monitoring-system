@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Table, Tag, Space, Button, Input, Form, Tooltip, Row, Col, Card, message } from 'antd';
 import moment from 'moment';
 import { useRequest } from 'umi';
@@ -6,6 +6,8 @@ import { getEnvData } from '@/services/ant-design-pro/api';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HistogramChart from './histogram-chart';
 import Styles from './dust-chart.less';
+import { createWebSocket, closeWebSocket, notificationInfo, sendMessage } from './websocket';
+import { PubSub } from 'pubsub-js';
 
 class DustInfoTable extends React.Component {
   constructor() {
@@ -14,30 +16,20 @@ class DustInfoTable extends React.Component {
 
   state = {
     data: [],
-    value: {},
     columns: [],
   };
 
-  // sendMessage = () => {
-  //   if (typeof WebSocket == 'undefined') {
-  //     console.log('您的浏览器不支持WebSocket');
-  //   } else {
-  //     console.log('您的浏览器支持WebSocket');
-
-  //     // console.log(websocket);
-  //     // console.log(JSON.stringify(value));
-  //     websocket.send(JSON.stringify(this.state.value));
-  //   }
-  // };
-
-  onFinish = async (values) => {
+  onFinish = async (limitValue) => {
     //将用户上一次设置的值保存下来，然后用该预警值去每10秒请求一次后端接口
-    this.setState({ value: values });
 
     // //用户提交了数据后就通过socket传到后端
-    // sendMessage();
+    console.log(limitValue);
+    const limit = JSON.stringify(limitValue);
+    console.log(limit);
+    localStorage.setItem('limitValue', limit);
+    sendMessage(localStorage.getItem('limitValue'));
 
-    const envData = await getEnvData(values);
+    const envData = await getEnvData(JSON.parse(localStorage.getItem('limitValue')));
     if (envData) {
       this.setState({ data: envData?.data });
       console.log(envData);
@@ -49,6 +41,19 @@ class DustInfoTable extends React.Component {
   };
 
   componentDidMount = () => {
+    let socketURL = `ws://localhost:8080/ws/${localStorage.getItem('token')}`;
+    createWebSocket(socketURL);
+    notificationInfo('success', 'WebSocket', 'webSocket连接成功,每10秒推送一次最新数据', 3);
+    PubSub.subscribe('dataSource', (name, context) => {
+      console.log('订阅者', context);
+      this.setState({ data: context });
+    });
+    window.onbeforeunload = function () {
+      closeWebSocket();
+      PubSub.unsubscribe(this.state.data);
+      notificationInfo('warning', 'WebSocket', 'webSocket断开连接', 3);
+    };
+
     const columns = [
       {
         title: '粉尘浓度(g/m³)',
@@ -117,57 +122,23 @@ class DustInfoTable extends React.Component {
       console.log('dsafdafewqre', initData);
 
       this.setState({ data: initData?.data });
-      // openSocket();
-    };
-
-    const openSocket = () => {
-      //创建WebSocket
-      if (typeof WebSocket == 'undefined') {
-        console.log('您的浏览器不支持WebSocket');
-      } else {
-        console.log('您的浏览器支持WebSocket');
-
-        if (websocket != null) {
-          websocket.close();
-          websocket = null;
-        }
-
-        const socketURL = `ws://localhost:8080/ws/${localStorage.getItem('token')}`;
-        var websocket = new WebSocket(socketURL);
-        console.log(websocket);
-
-        //打开事件
-        //打开事件
-        websocket.onopen = function () {
-          console.log(new Date() + 'websocket已打开，正在连接...');
-          //socket.send("这是来自客户端的消息" + location.href + new Date());
-        };
-        //发现消息进入
-        websocket.onmessage = (msg) => {
-          console.log('websocket已连接');
-          console.log(JSON.parse(msg.data).data);
-          this.setState({ data: JSON.parse(msg.data).data || [] });
-          console.log('=========', this.state.data);
-        };
-        //关闭事件
-        websocket.onclose = function () {
-          console.log('websocket已关闭');
-        };
-        //发生了错误事件
-        websocket.onerror = function () {
-          console.log('websocket发生了错误');
-        };
-        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-        window.onbeforeunload = function () {
-          websocket.close();
-        };
-      }
     };
 
     init();
-    openSocket();
-    this.setState({ flag: true });
   };
+
+  componentWillUnmount() {
+    closeWebSocket();
+    PubSub.unsubscribe('dataSource');
+    notificationInfo('warning', 'WebSocket', 'webSocket断开连接', 3);
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   let _this = this;
+  //   _this.state.data = PubSub.subscribe('data', function (topic, message) {
+  //     // _this.handleWarningMessage(message);
+  //   });
+  // }
 
   render() {
     return (
@@ -245,10 +216,7 @@ class DustInfoTable extends React.Component {
                   headStyle={{ textAlign: 'center' }}
                   // loading="true"
                 >
-                  <HistogramChart
-                    histogramData={this.state.data[1]}
-                    limitValue={this.state.value}
-                  />
+                  <HistogramChart histogramData={this.state.data[1]} />
                 </Card>
               </div>
             </Col>

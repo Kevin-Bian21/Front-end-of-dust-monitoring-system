@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   Tag,
@@ -23,6 +23,7 @@ import { useToggle, useUpdateEffect } from 'ahooks';
 import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
 import Modal from './components/Modal';
+import { getUserInfo } from '@/services/ant-design-pro/api';
 
 //import SearchBuilder from './builder/searchBuilder';
 
@@ -36,6 +37,16 @@ const TableList = () => {
   const [searchVisible, searchAction] = useToggle(true);
   const [searchForm] = Form.useForm();
   const { RangePicker } = DatePicker;
+  const [data, setData] = useState([]);
+
+  useEffect = () => {
+    fetchData();
+  };
+
+  async function fetchData() {
+    initData = await getUserInfo();
+    setData(initData?.data);
+  }
 
   const columns = [
     {
@@ -104,35 +115,35 @@ const TableList = () => {
       ),
     },
   ];
-  const data = [
-    {
-      id: '1',
-      key: '1',
-      name: '罗翔',
-      age: 32,
-      address: 'China',
-      phone: '110',
-      tags: ['nice'],
-    },
-    {
-      id: '2',
-      key: '2',
-      name: '张三',
-      age: 42,
-      address: 'Janpan',
-      phone: '995',
-      tags: ['loser'],
-    },
-    {
-      id: '3',
-      key: '2',
-      name: '李四',
-      age: 18,
-      address: 'USA',
-      phone: '911',
-      tags: ['loser'],
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: '1',
+  //     key: '1',
+  //     name: '罗翔',
+  //     age: 32,
+  //     address: 'China',
+  //     phone: '110',
+  //     tags: ['nice'],
+  //   },
+  //   {
+  //     id: '2',
+  //     key: '2',
+  //     name: '张三',
+  //     age: 42,
+  //     address: 'Janpan',
+  //     phone: '995',
+  //     tags: ['loser'],
+  //   },
+  //   {
+  //     id: '3',
+  //     key: '2',
+  //     name: '李四',
+  //     age: 18,
+  //     address: 'USA',
+  //     phone: '911',
+  //     tags: ['loser'],
+  //   },
+  // ];
 
   //删除信息确认对话框
   function showDeleteConfirm(record) {
