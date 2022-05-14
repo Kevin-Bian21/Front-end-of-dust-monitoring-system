@@ -118,7 +118,7 @@ class DustInfoTable extends React.Component {
     };
 
     const init = async () => {
-      const initData = await getEnvData({});
+      const initData = await getEnvData(JSON.parse(localStorage.getItem('limitValue')) || {});
       console.log('dsafdafewqre', initData);
 
       this.setState({ data: initData?.data });
