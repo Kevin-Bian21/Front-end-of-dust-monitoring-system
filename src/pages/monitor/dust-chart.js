@@ -30,25 +30,6 @@ const Page = () => {
             </DemoBox>
           </Col>
         </Row>
-
-        <Divider orientation="left">温度湿度监测区</Divider>
-        <Row justify="start" gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
-          <Col span={4}>
-            <div style={style}>
-              <Temperature />
-            </div>
-          </Col>
-          <Col span={4}>
-            <div style={style}>
-              <WindySpeed />
-            </div>
-          </Col>
-          <Col span={4}>
-            <div>
-              <DeviceMap />
-            </div>
-          </Col>
-        </Row>
       </div>
     );
   };

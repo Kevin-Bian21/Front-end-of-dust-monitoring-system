@@ -11,6 +11,12 @@ let createWebSocket = (url) => {
   websocket.onopen = function () {
     //heartCheck.reset().start();
     console.log(new Date() + 'websocket已打开，正在连接...');
+
+    //在页面跳转后返回时，让其通过socket像后端传送一次之前设置的值
+    if (websocket) {
+      console.log(websocket);
+      sendMessage(localStorage.getItem('limitValue'));
+    }
   };
   //关闭事件
   websocket.onclose = function () {
@@ -72,4 +78,4 @@ let notificationInfo = (type, message, description, duration) => {
   });
 };
 
-export { createWebSocket, closeWebSocket, notificationInfo, sendMessage };
+export { websocket, createWebSocket, closeWebSocket, notificationInfo, sendMessage };

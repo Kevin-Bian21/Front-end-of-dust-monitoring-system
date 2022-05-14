@@ -17,6 +17,9 @@ export const initialStateConfig = {
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 
+const limit = JSON.stringify({ dustLimit: '50', temperatureLimit: '30' });
+localStorage.setItem('limitValue', limit);
+
 //登录后请求后端都带上token
 const addToken = (url, options) => {
   options.headers = {

@@ -64,6 +64,15 @@ export default [
     component: './table/tableList',
   },
 
+  // {
+  //   path: '/system-data',
+  //   component: './monitor/dust-chart',
+  //   name: 'panel',
+  //   icon: 'icon-jianshi-monitoring',
+  //   //   access: 'canAdmin',
+  //   //routes: [{ exact: true }],
+  // },
+
   {
     path: '/',
     redirect: '/welcome',

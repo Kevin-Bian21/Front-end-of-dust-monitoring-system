@@ -6,7 +6,13 @@ import { getEnvData } from '@/services/ant-design-pro/api';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import HistogramChart from './histogram-chart';
 import Styles from './dust-chart.less';
-import { createWebSocket, closeWebSocket, notificationInfo, sendMessage } from './websocket';
+import {
+  websocket,
+  createWebSocket,
+  closeWebSocket,
+  notificationInfo,
+  sendMessage,
+} from './websocket';
 import { PubSub } from 'pubsub-js';
 
 class DustInfoTable extends React.Component {
@@ -25,14 +31,12 @@ class DustInfoTable extends React.Component {
     // //用户提交了数据后就通过socket传到后端
     console.log(limitValue);
     const limit = JSON.stringify(limitValue);
-    console.log(limit);
     localStorage.setItem('limitValue', limit);
     sendMessage(localStorage.getItem('limitValue'));
 
     const envData = await getEnvData(JSON.parse(localStorage.getItem('limitValue')));
     if (envData) {
       this.setState({ data: envData?.data });
-      console.log(envData);
     }
   };
 
@@ -41,16 +45,18 @@ class DustInfoTable extends React.Component {
   };
 
   componentDidMount = () => {
+    // console.log(websocket);
+
     let socketURL = `ws://localhost:8080/ws/${localStorage.getItem('token')}`;
     createWebSocket(socketURL);
+
     notificationInfo('success', 'WebSocket', 'webSocket连接成功,每10秒推送一次最新数据', 3);
     PubSub.subscribe('dataSource', (name, context) => {
-      console.log('订阅者', context);
       this.setState({ data: context });
     });
     window.onbeforeunload = function () {
       closeWebSocket();
-      PubSub.unsubscribe(this.state.data);
+      // PubSub.unsubscribe('dataSource');
       notificationInfo('warning', 'WebSocket', 'webSocket断开连接', 3);
     };
 
@@ -119,7 +125,6 @@ class DustInfoTable extends React.Component {
 
     const init = async () => {
       const initData = await getEnvData(JSON.parse(localStorage.getItem('limitValue')) || {});
-      console.log('dsafdafewqre', initData);
 
       this.setState({ data: initData?.data });
     };

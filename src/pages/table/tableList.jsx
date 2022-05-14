@@ -34,37 +34,33 @@ const TableList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const { confirm } = AntdModal;
-  const [searchVisible, searchAction] = useToggle(true);
+  const [searchVisible, searchAction] = useToggle(false);
   const [searchForm] = Form.useForm();
   const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
 
-  useEffect = () => {
+  useEffect(() => {
     fetchData();
-  };
+  }, []);
 
   async function fetchData() {
-    initData = await getUserInfo();
+    const initData = await getUserInfo();
+    console.log(initData);
     setData(initData?.data);
   }
 
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      dataIndex: 'userId',
+      key: 'userId',
       render: (text) => <a>{text}</a>,
     },
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'userName',
       key: 'name',
       render: (text) => <a>{text}</a>,
-    },
-    {
-      title: '地址',
-      dataIndex: 'address',
-      key: 'address',
     },
     {
       title: '电话',
@@ -72,25 +68,47 @@ const TableList = () => {
       key: 'phone',
     },
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
+      title: '邮箱',
+      dataIndex: 'email',
+      key: 'email',
     },
+
+    {
+      title: '创建时间',
+      dataIndex: 'generateTime',
+      key: 'generateTime',
+    },
+    {
+      title: '最后登录时间',
+      dataIndex: 'lastLoginTime',
+      key: 'lastLoginTime',
+    },
+    {
+      title: '权限',
+      dataIndex: 'role',
+      key: 'role',
+      render: (text) => <a>{text}</a>,
+    },
+    // {
+    //   title: 'Tags',
+    //   key: 'tags',
+    //   dataIndex: 'tags',
+    //   render: (tags) => (
+    //     <>
+    //       {tags.map((tag) => {
+    //         let color = tag.length > 5 ? 'geekblue' : 'green';
+    //         if (tag === 'loser') {
+    //           color = 'volcano';
+    //         }
+    //         return (
+    //           <Tag color={color} key={tag}>
+    //             {tag.toUpperCase()}
+    //           </Tag>
+    //         );
+    //       })}
+    //     </>
+    //   ),
+    // },
     {
       title: '操作',
       key: 'action',
@@ -168,7 +186,13 @@ const TableList = () => {
     let slice = columns.slice(0, 2);
     console.log(slice);
     return (
-      <Table columns={slice} dataSource={dataSource} rowKey="id" size="small" pagination={false} />
+      <Table
+        columns={slice}
+        dataSource={dataSource}
+        rowKey="userId"
+        size="small"
+        pagination={false}
+      />
     );
   };
 
@@ -321,7 +345,7 @@ const TableList = () => {
       <Card>
         {beforeTableLayout()}
         <Table
-          rowKey="id"
+          rowKey="userId"
           dataSource={data}
           columns={columns}
           pagination={false}

@@ -5,43 +5,117 @@ import { Table, Tag, Space, Pagination, Row, Col, Card, Tooltip } from 'antd';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { history } from 'umi';
 import ReactEcharts from 'echarts-for-react';
+import { getDataThroughMonitorLocal } from '@/services/ant-design-pro/api';
 
 const DemoLine = () => {
-  console.log(history.location);
+  useEffect(() => {
+    async function fetchData() {
+      const params = history.location.state;
+      const initData = await getDataThroughMonitorLocal({ local: params });
+      setData(initData);
+      console.log(initData.dustDensity);
+    }
+    fetchData();
+  }, []);
 
   const params = history.location.state;
+
+  console.log(history.location);
+
   const lineTitle = params + '24小时内数据变化折线图';
 
   const limitValue = localStorage.getItem('limitValue');
 
   const [data, setData] = useState([]);
 
-  const [sales, setSales] = useState([5, 20, 36, 10, 10, 20]);
-  const [stores, setStores] = useState([15, 120, 36, 110, 110, 20]);
+  const getOption = (dustDensity, temperature, monitorTime, humidity, windSpeed) => {
+    console.log(monitorTime);
 
-  const getOption = (sal, sto) => {
     return {
-      title: {
-        text: 'ECharts 入门示例',
+      tooltip: {
+        trigger: 'axis',
       },
-      tooltip: {},
       legend: {
-        data: ['销量', '库存'],
+        data: ['粉尘浓度', '温度', '湿度', '风速'],
       },
+
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true,
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          dataView: { readOnly: true },
+          magicType: { type: ['line', 'bar'] },
+          saveAsImage: {},
+        },
+      },
+
       xAxis: {
-        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子'],
+        type: 'category',
+        data: monitorTime,
       },
-      yAxis: {},
+
+      yAxis: {
+        // 纵轴标尺固定
+        type: 'value',
+        scale: true,
+        max: 80,
+        min: 0,
+        splitNumber: 8,
+        boundaryGap: [0.5, 0.5],
+      },
       series: [
         {
-          name: '销量',
+          name: '粉尘浓度',
           type: 'line',
-          data: sales,
+          data: dustDensity,
+          smooth: true,
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' },
+            ],
+          },
         },
         {
-          name: '库存',
+          name: '温度',
           type: 'line',
-          data: stores,
+          data: temperature,
+          smooth: true,
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' },
+            ],
+          },
+        },
+        {
+          name: '湿度',
+          type: 'line',
+          data: humidity,
+          smooth: true,
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' },
+            ],
+          },
+        },
+        {
+          name: '风速',
+          type: 'line',
+          data: windSpeed,
+          smooth: true,
+          markPoint: {
+            data: [
+              { type: 'max', name: 'Max' },
+              { type: 'min', name: 'Min' },
+            ],
+          },
         },
       ],
     };
@@ -53,7 +127,15 @@ const DemoLine = () => {
         title={lineTitle}
         headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
       >
-        <ReactEcharts option={getOption(sales, stores)} />
+        <ReactEcharts
+          option={getOption(
+            data.dustDensity,
+            data.temperature,
+            data.monitorTime,
+            data.humidity,
+            data.windSpeed,
+          )}
+        />
       </Card>
     </PageContainer>
   );

@@ -50,6 +50,14 @@ export async function getUserInfo(options) {
   });
 }
 
+export async function getDataThroughMonitorLocal(params, options) {
+  return request('/api/getDataThroughMonitorLocal', {
+    method: 'GET',
+    params: { ...params },
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 
 export async function getNotices(options) {
