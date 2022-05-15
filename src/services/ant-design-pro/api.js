@@ -43,6 +43,14 @@ export async function getEnvData(body, options) {
   });
 }
 
+export async function getDataThroughMonitorLocal(params, options) {
+  return request('/api/getDataThroughMonitorLocal', {
+    method: 'GET',
+    params: { ...params },
+    ...(options || {}),
+  });
+}
+
 export async function getUserInfo(body, options) {
   return request('/api/allUserInfo', {
     method: 'POST',
@@ -54,16 +62,19 @@ export async function getUserInfo(body, options) {
   });
 }
 
-export async function getDataThroughMonitorLocal(params, options) {
-  return request('/api/getDataThroughMonitorLocal', {
-    method: 'GET',
-    params: { ...params },
+export async function deleteUser(body, options) {
+  return request('/api/deleteUser', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
 
-export async function deleteUser(body, options) {
-  return request('/api/deleteUser', {
+export async function addUser(body, options) {
+  return request('/api/addUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -23,7 +23,7 @@ import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { useToggle, useUpdateEffect } from 'ahooks';
 import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
-import Modal from './components/Modal';
+import Modal from './components/table-modal';
 import { deleteUser, getUserInfo } from '@/services/ant-design-pro/api';
 
 //import SearchBuilder from './builder/searchBuilder';
