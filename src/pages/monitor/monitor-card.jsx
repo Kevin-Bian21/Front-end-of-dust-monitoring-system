@@ -4,7 +4,6 @@ import { Liquid } from '@ant-design/plots';
 import { Statistic, Card, Row, Col } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import Styles from './dust-chart.less';
-import Temperature from './temperature';
 import DeviceMap from './device-map';
 
 const DemoLiquid = () => {

@@ -14,6 +14,7 @@ import {
   InputNumber,
   Input,
   DatePicker,
+  message,
 } from 'antd';
 import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { useRequest } from 'umi';
@@ -23,7 +24,7 @@ import { useToggle, useUpdateEffect } from 'ahooks';
 import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
 import Modal from './components/Modal';
-import { getUserInfo } from '@/services/ant-design-pro/api';
+import { deleteUser, getUserInfo } from '@/services/ant-design-pro/api';
 
 //import SearchBuilder from './builder/searchBuilder';
 
@@ -54,6 +55,10 @@ const TableList = () => {
       title: 'ID',
       dataIndex: 'userId',
       key: 'userId',
+      sorter: {
+        compare: (a, b) => a.userId - b.userId,
+        multiple: 1, //多列排序优先级为最高
+      },
       render: (text) => <a>{text}</a>,
     },
     {
@@ -61,6 +66,7 @@ const TableList = () => {
       dataIndex: 'userName',
       key: 'name',
       render: (text) => <a>{text}</a>,
+      align: 'center',
     },
     {
       title: '电话',
@@ -68,20 +74,40 @@ const TableList = () => {
       key: 'phone',
     },
     {
+      title: '登录账户',
+      dataIndex: 'loginAccount',
+      key: 'loginAccount',
+    },
+    {
+      title: '密码',
+      dataIndex: 'passWord',
+      key: 'password',
+      hideInTable: true,
+    },
+    {
       title: '邮箱',
       dataIndex: 'email',
       key: 'email',
     },
-
     {
       title: '创建时间',
       dataIndex: 'generateTime',
       key: 'generateTime',
+      sorter: {
+        compare: (a, b) => new Date(a.generateTime) - new Date(b.generateTime),
+        multiple: 2, //多列排序优先级为最高
+      },
+      align: 'center',
     },
     {
       title: '最后登录时间',
       dataIndex: 'lastLoginTime',
       key: 'lastLoginTime',
+      sorter: {
+        compare: (a, b) => new Date(a.lastLoginTime) - new Date(b.lastLoginTime),
+        multiple: 3, //多列排序优先级为最高
+      },
+      align: 'center',
     },
     {
       title: '权限',
@@ -89,26 +115,6 @@ const TableList = () => {
       key: 'role',
       render: (text) => <a>{text}</a>,
     },
-    // {
-    //   title: 'Tags',
-    //   key: 'tags',
-    //   dataIndex: 'tags',
-    //   render: (tags) => (
-    //     <>
-    //       {tags.map((tag) => {
-    //         let color = tag.length > 5 ? 'geekblue' : 'green';
-    //         if (tag === 'loser') {
-    //           color = 'volcano';
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag.toUpperCase()}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </>
-    //   ),
-    // },
     {
       title: '操作',
       key: 'action',
@@ -131,37 +137,9 @@ const TableList = () => {
           </Button>
         </Space>
       ),
+      align: 'center',
     },
   ];
-  // const data = [
-  //   {
-  //     id: '1',
-  //     key: '1',
-  //     name: '罗翔',
-  //     age: 32,
-  //     address: 'China',
-  //     phone: '110',
-  //     tags: ['nice'],
-  //   },
-  //   {
-  //     id: '2',
-  //     key: '2',
-  //     name: '张三',
-  //     age: 42,
-  //     address: 'Janpan',
-  //     phone: '995',
-  //     tags: ['loser'],
-  //   },
-  //   {
-  //     id: '3',
-  //     key: '2',
-  //     name: '李四',
-  //     age: 18,
-  //     address: 'USA',
-  //     phone: '911',
-  //     tags: ['loser'],
-  //   },
-  // ];
 
   //删除信息确认对话框
   function showDeleteConfirm(record) {
@@ -174,12 +152,26 @@ const TableList = () => {
       okType: 'danger',
       cancelText: 'No',
       onOk() {
-        console.log('OK');
+        return deleteUserData({
+          ids: Object.keys(record).length ? [record.userId] : selectedRowKeys,
+        });
       },
       onCancel() {
         console.log('Cancel');
       },
     });
+  }
+
+  async function deleteUserData(ids) {
+    const msg = await deleteUser(ids);
+    if (msg) {
+      if (msg.success) {
+        message.success(msg.message);
+        fetchData();
+      } else {
+        message.error(msg.message);
+      }
+    }
   }
 
   const batchOverview = (dataSource) => {
@@ -290,7 +282,8 @@ const TableList = () => {
             showSizeChanger
             onShowSizeChange={onShowSizeChange}
             defaultCurrent={3}
-            total={50}
+            total={5}
+            hideOnSinglePage={true}
           />
         </Col>
       </Row>
@@ -329,11 +322,11 @@ const TableList = () => {
         <Button
           type="primary"
           onClick={() => {
-            selectedRowKeys: [];
-            selectedRows: [];
+            setSelectedRowKeys([]);
+            setSelectedRows([]);
           }}
         >
-          Cancle
+          Cancel
         </Button>
       </Space>
     ) : null;
@@ -350,6 +343,7 @@ const TableList = () => {
           columns={columns}
           pagination={false}
           rowSelection={rowSelection}
+          loading="true"
         />
         {afterTableLayout()}
       </Card>

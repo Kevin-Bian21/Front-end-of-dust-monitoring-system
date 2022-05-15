@@ -5,10 +5,8 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Row, Col, Space, Divider, Card } from 'antd';
 import DustInfoTable from './dust-table';
 import HistogramChart from './histogram-chart';
-import Temperature from './temperature';
 import DeviceMap from './device-map';
 import MonitorCard from './monitor-card';
-import WindySpeed from './windy-speed';
 import Styles from './dust-chart.less';
 
 const Page = () => {
