@@ -30,7 +30,10 @@ import { deleteUser, getUserInfo } from '@/services/ant-design-pro/api';
 
 const TableList = () => {
   const [page, setPage] = useState(1);
-  const [per_page, setPer_page] = useState(10);
+  const [limit, setLimit] = useState(10);
+  const [searchMessage, setSearchMessage] = useState(null);
+  const [startDateTime, setStartDateTime] = useState(null);
+  const [endDateTime, setEndDateTime] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -39,15 +42,28 @@ const TableList = () => {
   const [searchForm] = Form.useForm();
   const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
+  const [resetDate, setResetDate] = useState(new Date());
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  //监听这些值的变化，如果发送改变，则立即执行该方法
+  useEffect(() => {
+    fetchData();
+  }, [page, limit, searchMessage, startDateTime]);
+
   async function fetchData() {
-    const initData = await getUserInfo();
+    const values = {
+      page: page,
+      limit: limit,
+      searchMessage: searchMessage || null,
+      startDateTime: startDateTime || null,
+      endDateTime: endDateTime || null,
+    };
+    const initData = await getUserInfo(values);
     console.log(initData);
-    setData(initData?.data);
+    setData(initData);
   }
 
   const columns = [
@@ -77,12 +93,6 @@ const TableList = () => {
       title: '登录账户',
       dataIndex: 'loginAccount',
       key: 'loginAccount',
-    },
-    {
-      title: '密码',
-      dataIndex: 'passWord',
-      key: 'password',
-      hideInTable: true,
     },
     {
       title: '邮箱',
@@ -188,6 +198,19 @@ const TableList = () => {
     );
   };
 
+  const onFinish = (value) => {
+    if (value.setSearchMessage == '') {
+      setSearchMessage(null);
+    } else {
+      setSearchMessage(value.searchMessage);
+    }
+  };
+
+  const onChange = (value, dateString) => {
+    setStartDateTime(dateString[0]);
+    setEndDateTime(dateString[1]);
+  };
+
   //顶部搜索框
   const searchLayout = () => {
     return (
@@ -195,12 +218,12 @@ const TableList = () => {
         {searchVisible && (
           <div>
             <Card className={styles.searchForm}>
-              <Form>
+              <Form onFinish={onFinish} form={searchForm}>
                 <Row>
                   <Col sm={6}>
                     <Form.Item
                       label="全表搜索"
-                      name="search"
+                      name="searchMessage"
                       rules={[{ required: false, message: 'Please input your username!' }]}
                     >
                       <Input />
@@ -209,8 +232,10 @@ const TableList = () => {
                   <Col sm={12}>
                     <Form.Item label="创建时间">
                       <DatePicker.RangePicker
-                        showTime
+                        // showTime
                         style={{ width: '100%' }}
+                        onChange={onChange}
+                        key={resetDate}
                         ranges={{
                           Today: [moment().startOf('day'), moment().endOf('day')],
                           'Last 7 Days': [moment().subtract(7, 'd'), moment()],
@@ -226,8 +251,22 @@ const TableList = () => {
                   <Col sm={1} />
                   <Col sm={4}>
                     <Space>
-                      <Button>搜索</Button>
-                      <Button>重置</Button>
+                      <Button type="primary" htmlType="submit">
+                        搜索
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          searchForm.resetFields();
+                          setSelectedRowKeys([]);
+                          setSelectedRows([]);
+                          setResetDate(new Date());
+                          setSearchMessage(null);
+                          setStartDateTime(null);
+                          setEndDateTime(null);
+                        }}
+                      >
+                        重置
+                      </Button>
                     </Space>
                   </Col>
 
@@ -281,15 +320,18 @@ const TableList = () => {
           <Pagination
             showSizeChanger
             onShowSizeChange={onShowSizeChange}
-            defaultCurrent={3}
-            total={5}
-            hideOnSinglePage={true}
+            onChange={onShowSizeChange}
+            hideOnSinglePage={false}
+            total={2 * data.length}
           />
         </Col>
       </Row>
     );
   };
   function onShowSizeChange(current, pageSize) {
+    setPage(current);
+    setLimit(pageSize);
+    // fetchData();
     console.log(current, pageSize);
   }
 

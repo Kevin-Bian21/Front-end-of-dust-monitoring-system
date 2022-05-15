@@ -43,9 +43,13 @@ export async function getEnvData(body, options) {
   });
 }
 
-export async function getUserInfo(options) {
+export async function getUserInfo(body, options) {
   return request('/api/allUserInfo', {
-    method: 'GET',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }
