@@ -16,15 +16,17 @@ import {
   DatePicker,
   message,
 } from 'antd';
-import { ExclamationCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, ReconciliationFilled, SearchOutlined } from '@ant-design/icons';
 import { useRequest } from 'umi';
 import styles from './tableList.less';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { useToggle, useUpdateEffect } from 'ahooks';
 import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
-import Modal from './components/table-modal';
+import Modal from './components/add-modal';
 import { deleteUser, getUserInfo } from '@/services/ant-design-pro/api';
+import access from '@/access';
+import EditModal from './components/edit-modal';
 
 //import SearchBuilder from './builder/searchBuilder';
 
@@ -35,6 +37,7 @@ const TableList = () => {
   const [startDateTime, setStartDateTime] = useState(null);
   const [endDateTime, setEndDateTime] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const { confirm } = AntdModal;
@@ -43,6 +46,7 @@ const TableList = () => {
   const { RangePicker } = DatePicker;
   const [data, setData] = useState([]);
   const [resetDate, setResetDate] = useState(new Date());
+  const [willEditData, setWillEditData] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -121,9 +125,8 @@ const TableList = () => {
     },
     {
       title: '权限',
-      dataIndex: 'role',
-      key: 'role',
-      render: (text) => <a>{text}</a>,
+      dataIndex: 'access',
+      key: 'access',
     },
     {
       title: '操作',
@@ -131,7 +134,18 @@ const TableList = () => {
       render: (text, record) => (
         <Space size="middle">
           {/* <a>Invite {record.name}</a> */}
-          <Button type="primary" size="small">
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => {
+              //解决下拉选择框和数值匹配的问题
+              if (record.access == 'user') record.access = '3';
+              if (record.access == 'admin') record.access = '2';
+
+              setWillEditData(record);
+              setIsEditModalVisible(true);
+            }}
+          >
             编辑
           </Button>
           <Button
@@ -139,7 +153,6 @@ const TableList = () => {
             danger
             size="small"
             onClick={() => {
-              console.log(record);
               showDeleteConfirm(record);
             }}
           >
@@ -395,6 +408,15 @@ const TableList = () => {
         hideModal={() => {
           setIsModalVisible(false);
         }}
+        reloadData={fetchData}
+      />
+      <EditModal
+        modalVisible={isEditModalVisible}
+        hideModal={() => {
+          setIsEditModalVisible(false);
+        }}
+        record={willEditData}
+        reloadData={fetchData}
       />
       <FooterToolbar
         //extra属性可以实现左侧显示

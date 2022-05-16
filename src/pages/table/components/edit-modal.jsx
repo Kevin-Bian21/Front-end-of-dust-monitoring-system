@@ -1,17 +1,49 @@
 import React, { useEffect } from 'react';
 import { Modal as AntdModal, Button, Form, Input, Tag, Select, message } from 'antd';
-import { addUser } from '@/services/ant-design-pro/api';
+import { updateUser } from '@/services/ant-design-pro/api';
 
-const EditModal = ({ modalVisible, hideModal, record, reloadDate }) => {
+const EditModal = ({ modalVisible, hideModal, record, reloadData }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.resetFields();
+    reloadData();
   }, [modalVisible]);
+
+  //添加新用户
+  const handlerUpdateUser = () => {
+    //校验表单成功后调用接口
+    form
+      .validateFields()
+      .then((values) => {
+        updateUserInfo(values);
+      })
+      .catch((info) => {
+        console.log(info);
+      });
+  };
+
+  const updateUserInfo = async (values) => {
+    const data = form.getFieldsValue();
+    const msg = await updateUser(data);
+    if (msg) {
+      if (msg.success) {
+        hideModal();
+        message.success(msg.message);
+      } else {
+        message.error(msg.message);
+      }
+    }
+  };
 
   return (
     <div>
-      <AntdModal title="修改信息" visible={modalVisible} onCancel={hideModal}>
+      <AntdModal
+        title="修改信息"
+        visible={modalVisible}
+        onCancel={hideModal}
+        onOk={handlerUpdateUser}
+      >
         <Form
           form={form}
           name="basic"
@@ -19,6 +51,9 @@ const EditModal = ({ modalVisible, hideModal, record, reloadDate }) => {
           wrapperCol={{ span: 16 }}
           initialValues={record}
         >
+          <Form.Item name="userId" allowClear hidden>
+            <Input />
+          </Form.Item>
           <Form.Item
             label="姓名"
             name="userName"

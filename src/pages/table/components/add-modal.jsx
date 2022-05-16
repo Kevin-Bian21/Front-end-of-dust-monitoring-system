@@ -4,11 +4,12 @@ import { addUser } from '@/services/ant-design-pro/api';
 import { useEffect } from 'react';
 import { values } from 'lodash';
 
-const Modal = ({ modalVisible, hideModal }) => {
+const Modal = ({ modalVisible, hideModal, reloadData }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.resetFields();
+    reloadData();
   }, [modalVisible]);
   //添加新用户
   const handlerAddUser = () => {
@@ -29,7 +30,6 @@ const Modal = ({ modalVisible, hideModal }) => {
     if (msg) {
       if (msg.success) {
         hideModal();
-        form.resetFields();
         message.success(msg.message);
       } else {
         message.error(msg.message);
