@@ -1,34 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Modal as AntdModal, Button, Form, Input, Tag, Select, message } from 'antd';
 import { addUser } from '@/services/ant-design-pro/api';
 
-const Modal = ({ modalVisible, hideModal }) => {
+const EditModal = ({ modalVisible, hideModal, record, reloadDate }) => {
   const [form] = Form.useForm();
 
-  //添加新用户
-  const handlerAddUser = async () => {
-    //获取表单所有的输入
-    const data = form.getFieldsValue();
-    const msg = await addUser(data);
-    if (msg) {
-      if (msg.success) {
-        message.success(msg.message);
-        hideModal();
-      } else {
-        message.error(msg.message);
-      }
-    }
-  };
+  useEffect(() => {
+    form.resetFields();
+  }, [modalVisible]);
 
   return (
     <div>
-      <AntdModal title="添加用户" visible={modalVisible} onCancel={hideModal} onOk={handlerAddUser}>
+      <AntdModal title="修改信息" visible={modalVisible} onCancel={hideModal}>
         <Form
           form={form}
           name="basic"
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
+          initialValues={record}
         >
           <Form.Item
             label="姓名"
@@ -59,6 +48,7 @@ const Modal = ({ modalVisible, hideModal }) => {
           >
             <Input />
           </Form.Item>
+
           <Form.Item
             label="密码"
             name="passWord"
@@ -69,13 +59,43 @@ const Modal = ({ modalVisible, hideModal }) => {
                 message: '请设置登录密码',
               },
               {
-                pattern: new RegExp(/^(?=.*d)(?=.*[a-zA-Z]).{5,20}$/),
+                min: 6,
                 message: '必须包含字母和数字的组合,长度在5-20之间',
+              },
+            ]}
+            hasFeedback
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="电话"
+            name="phone"
+            allowClear
+            rules={[
+              {
+                pattern: new RegExp(
+                  /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,
+                ),
+                message: '请输入正确的手机号码',
               },
             ]}
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            label="邮箱"
+            name="email"
+            allowClear
+            rules={[
+              {
+                type: 'email',
+                message: '请输入正确的电子邮箱',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
           <Form.Item
             label="权限"
             name="access"
@@ -97,4 +117,4 @@ const Modal = ({ modalVisible, hideModal }) => {
   );
 };
 
-export default Modal;
+export default EditModal;
