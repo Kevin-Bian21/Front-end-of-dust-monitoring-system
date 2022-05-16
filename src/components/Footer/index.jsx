@@ -14,21 +14,19 @@ const Footer = () => {
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
         {
-          key: 'Ant Design Pro',
+          key: 'Dust Monitor',
           title: '粉尘监测',
-          //href: 'https://pro.ant.design',
           blankTarget: true,
         },
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
+          href: 'https://gitee.com/Kevin_Bian',
           blankTarget: true,
         },
         {
-          key: 'Ant Design',
+          key: 'Smart mine',
           title: '智慧矿山',
-          //href: 'https://ant.design',
           blankTarget: true,
         },
       ]}

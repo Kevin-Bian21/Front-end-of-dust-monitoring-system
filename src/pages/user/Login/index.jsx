@@ -34,7 +34,7 @@ const goto = () => {
     console.log(history.location);
 
     const { redirect } = query;
-    history.push(redirect ? `/admin/${redirect}` : '/');
+    history.push(redirect ? `${redirect}` : '/');
     console.log(history.location);
   }, 10);
 };

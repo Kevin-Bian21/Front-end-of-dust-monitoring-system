@@ -16,30 +16,31 @@ export default [
       },
     ],
   },
-  {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    component: './Admin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
+  // {
+  //   path: '/welcome',
+  //   name: 'welcome',
+  //   icon: 'smile',
+  //   component: './Welcome',
+  // },
+  // {
+  //   path: '/admin',
+  //   name: 'admin',
+  //   icon: 'crown',
+  //   access: 'canAdmin',
+  //   access: 'canSuperAdmin',
+  //   component: './Admin',
+  //   routes: [
+  //     {
+  //       path: '/admin/sub-page',
+  //       name: 'sub-page',
+  //       icon: 'smile',
+  //       component: './Welcome',
+  //     },
+  //     {
+  //       component: './404',
+  //     },
+  //   ],
+  // },
   {
     name: 'lineChart',
     hideInMenu: true,
@@ -56,11 +57,25 @@ export default [
     //   access: 'canAdmin',
     //routes: [{ exact: true }],
   },
-
+  {
+    path: '/system-data/environment-data',
+    name: 'monitorData',
+    icon: 'icon-shuju',
+    component: './Welcome',
+  },
+  {
+    path: '/system-data/logging-data',
+    name: 'loggingData',
+    icon: 'smile',
+    access: 'canAdmin',
+    access: 'canSuperAdmin',
+    component: './Welcome',
+  },
   {
     name: 'list.table-list',
     icon: 'icon-yonghuguanli',
     path: '/list',
+    access: 'canSuperAdmin',
     component: './table/tableList',
   },
 
@@ -75,7 +90,7 @@ export default [
 
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/dust-chart',
   },
   {
     component: './404',
