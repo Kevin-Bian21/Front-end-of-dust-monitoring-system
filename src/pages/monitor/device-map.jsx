@@ -17,17 +17,17 @@ class DeviceMap extends React.Component {
     var myChart = echarts.init(chartDom);
     var option;
 
-    $.get('static/img/iceland.svg', function (svg) {
+    $.get('static/img/dust-monitor.svg', function (svg) {
       let color_c = 'red';
       let flag = false;
-      echarts.registerMap('iceland', { svg: svg });
+      echarts.registerMap('dust-monitor', { svg: svg });
       option = {
         tooltip: {},
         geo: {
           tooltip: {
             show: true,
           },
-          map: 'iceland',
+          map: 'dust-monitor',
           roam: true,
         },
         series: {
@@ -36,12 +36,15 @@ class DeviceMap extends React.Component {
           geoIndex: 0,
           zlevel: 1,
           data: [
-            [128.2358421078053, 459.70913833075736, 100],
-            [770.3415644319939, 757.9672194986475, 30],
-            [1180.0329284196291, 743.6141808346214, 80],
-            [894.03790632245, 1188.1985153835008, 61],
-            [1372.98925630313, 477.3839988649537, 70],
-            [1378.62251255796, 935.6708486282843, 81],
+            [1875.2358421078053, 550.70913833075736, 100],
+            [2875.3415644319939, 550.9672194986475, 30],
+            [2875.0329284196291, 780.6141808346214, 80],
+            [2875.0329284196291, 1240.6141808346214, 80],
+            [2875.03790632245, 1520.1985153835008, 61],
+            [2875.98925630313, 1830.3839988649537, 70],
+            [2875.62251255796, 2130.6708486282843, 81],
+            [2875.62251255796, 2420.6708486282843, 81],
+            [3370.62251255796, 3530.6708486282843, 81],
           ],
           renderItem(params, api) {
             const coord = api.coord([

@@ -1,27 +1,23 @@
 import React from 'react';
-import { Modal as AntdModal, Button, Form, Input, Tag, Select } from 'antd';
+import { Modal as AntdModal, Button, Form, Input, Tag, Select, message } from 'antd';
 import { addUser } from '@/services/ant-design-pro/api';
 
 const Modal = ({ modalVisible, hideModal }) => {
   const [form] = Form.useForm();
 
   //添加新用户
-  const onFinish = async (value) => {
-    console.log(value);
-    const msg = await addUser(value);
+  const handlerAddUser = async () => {
+    //获取表单所有的输入
+    const data = form.getFieldsValue();
+    const msg = await addUser(data);
     if (msg) {
       if (msg.success) {
         message.success(msg.message);
+        hideModal();
       } else {
         message.error(msg.message);
       }
     }
-  };
-
-  const handlerAddUser = () => {
-    //
-    const data = form.getFieldsValue();
-    console.log(data);
   };
 
   return (
@@ -33,7 +29,6 @@ const Modal = ({ modalVisible, hideModal }) => {
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
-          onFinish={onFinish}
         >
           <Form.Item
             label="姓名"
@@ -92,8 +87,8 @@ const Modal = ({ modalVisible, hideModal }) => {
             ]}
           >
             <Select>
-              <Select.Option value="admin">管理员</Select.Option>
-              <Select.Option value="user">普通用户</Select.Option>
+              <Select.Option value="2">管理员</Select.Option>
+              <Select.Option value="3">普通用户</Select.Option>
             </Select>
           </Form.Item>
         </Form>
