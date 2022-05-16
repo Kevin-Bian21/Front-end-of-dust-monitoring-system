@@ -61,15 +61,15 @@ export default [
     path: '/system-data/environment-data',
     name: 'monitorData',
     icon: 'icon-shuju',
-    component: './Welcome',
+    component: './404',
   },
   {
     path: '/system-data/logging-data',
     name: 'loggingData',
-    icon: 'smile',
+    icon: 'icon-logger',
     access: 'canAdmin',
     access: 'canSuperAdmin',
-    component: './Welcome',
+    component: './404',
   },
   {
     name: 'list.table-list',
@@ -77,6 +77,13 @@ export default [
     path: '/list',
     access: 'canSuperAdmin',
     component: './table/tableList',
+  },
+
+  {
+    name: 'account-center',
+    icon: 'icon-icon03',
+    path: '/account/center',
+    component: './404',
   },
 
   // {

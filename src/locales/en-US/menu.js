@@ -5,6 +5,7 @@ export default {
   'menu.systemData': 'System Data',
   'menu.monitorData': 'Monitor Data',
   'menu.loggingData': 'Logging Data',
+  'menu.account-center': 'Account Center',
   'menu.more-blocks': 'More Blocks',
   'menu.home': 'Home',
   'menu.admin': 'Admin',

@@ -5,6 +5,7 @@ export default {
   'menu.systemData': '系统数据',
   'menu.monitorData': '监测数据',
   'menu.loggingData': '日志数据',
+  'menu.account-center': '个人中心',
   'menu.more-blocks': '更多区块',
   'menu.home': '首页',
   'menu.admin': '管理页',
