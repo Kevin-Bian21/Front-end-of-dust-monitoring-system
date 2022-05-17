@@ -2,9 +2,9 @@ const Settings = {
   navTheme: 'dark',
   // 拂晓蓝
   primaryColor: '#52C41A',
-  layout: 'side',
+  layout: 'top',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
   title: '智慧矿山',
