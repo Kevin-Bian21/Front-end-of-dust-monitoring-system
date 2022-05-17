@@ -29,7 +29,7 @@ import EditModal from './components/edit-modal';
 
 //import SearchBuilder from './builder/searchBuilder';
 
-const TableList = () => {
+const UserManger = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchMessage, setSearchMessage] = useState(null);
@@ -424,4 +424,4 @@ const TableList = () => {
     </PageContainer>
   );
 };
-export default TableList;
+export default UserManger;

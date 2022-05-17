@@ -58,25 +58,25 @@ export default [
     //routes: [{ exact: true }],
   },
   {
-    path: '/system-data/environment-data',
+    path: '/system/data/environment',
     name: 'monitorData',
     icon: 'icon-shuju',
     component: './table/envDataList',
   },
   {
-    path: '/system-data/logging-data',
+    path: '/system/data/logging',
     name: 'loggingData',
     icon: 'icon-logger',
     access: 'canAdmin',
     access: 'canSuperAdmin',
-    component: './404',
+    component: './table/loggingDataList',
   },
   {
     name: 'list.table-list',
     icon: 'icon-yonghuguanli',
-    path: '/list',
+    path: '/admin/manger',
     access: 'canSuperAdmin',
-    component: './table/tableList',
+    component: './table/userManger',
   },
 
   {
