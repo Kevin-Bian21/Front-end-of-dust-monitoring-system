@@ -45,12 +45,12 @@ export default [
     name: 'lineChart',
     hideInMenu: true,
     component: './monitor/line-chart',
-    path: '/dust/monitor/lineChartWithIn24h',
+    path: '/monitor/lineChartWithIn24h',
     //   access: 'canAdmin',
     //routes: [{ exact: true }],
   },
   {
-    path: '/dust/monitor',
+    path: '/monitor',
     component: './monitor/dust-chart',
     name: 'panel',
     icon: 'icon-jianshi-monitoring',
@@ -97,7 +97,7 @@ export default [
 
   {
     path: '/',
-    redirect: '/dust-chart',
+    redirect: '/monitor',
   },
   {
     component: './404',

@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Liquid } from '@ant-design/plots';
-import { Statistic, Card, Row, Col, Switch, notification } from 'antd';
+import { Statistic, Card, Row, Col, Switch, notification, Select, message } from 'antd';
 import {
   ArrowUpOutlined,
   ArrowDownOutlined,
   CloseOutlined,
   CheckOutlined,
+  SoundTwoTone,
 } from '@ant-design/icons';
 import Styles from './dust-chart.less';
 import DeviceMap from './device-map';
 import CloseDevice from './components/close-device';
 import StateDevice from './components/state-device';
+import MonitorVideo from './video/monitor-video';
 
 const MonitorCard = () => {
+  const [monitorVideoSrc, setMonitorVideoSrc] = useState(null);
+
   const onChange = (value) => {
     if (value == false) {
       setModalVisible(true);
@@ -21,6 +25,17 @@ const MonitorCard = () => {
     }
   };
   const [modalVisible, setModalVisible] = useState(false);
+
+  const selectMonitorVideo = async (value) => {
+    if (value) {
+      const msg = await getMonitorVideoSrc(value);
+      if (msg.success) {
+        message.success(msg.message);
+      } else {
+        message.error(msg.message);
+      }
+    }
+  };
 
   return (
     <div>
@@ -41,42 +56,29 @@ const MonitorCard = () => {
           </Col>
           <Col span={16}>
             <Card
-              title="预警次数"
+              title="监控视频"
               bordered={false}
               hoverable={true}
               size={'small'}
-              //style={{ width: 200, height: 200 }}
+              extra={
+                <Select style={{ width: 120 }} onChange={selectMonitorVideo()}>
+                  <Select.Option value="1">一号监测点</Select.Option>
+                  <Select.Option value="2">二号监测点</Select.Option>
+                  <Select.Option value="3">三号监测点</Select.Option>
+                  <Select.Option value="4">四号监测点</Select.Option>
+                  <Select.Option value="5">五号监测点</Select.Option>
+                  <Select.Option value="6">六号监测点</Select.Option>
+                  <Select.Option value="7">七号监测点</Select.Option>
+                </Select>
+              }
             >
-              <div style={{ height: 140 }}>
-                <div style={{ height: 50 }}>
-                  <Row>
-                    <Col span={12}>
-                      <Card>
-                        <Statistic
-                          title="Active"
-                          value={11.2}
-                          precision={2}
-                          valueStyle={{ color: '#3f8600' }}
-                          prefix={<ArrowUpOutlined />}
-                          suffix="%"
-                        />
-                      </Card>
-                    </Col>
-                    <Col span={12}>
-                      <Card>
-                        <Statistic
-                          value={9.3}
-                          precision={2}
-                          valueStyle={{ color: '#cf1322' }}
-                          prefix={<ArrowDownOutlined />}
-                          suffix="%"
-                        />
-                      </Card>
-                    </Col>
-                  </Row>
-                </div>
-                ;
-              </div>
+              <MonitorVideo
+                video_url={monitorVideoSrc}
+                onReady={(play) => {
+                  console.log('play====', play);
+                  play.play();
+                }}
+              />
             </Card>
           </Col>
         </Row>
