@@ -137,8 +137,10 @@ class DeviceMap extends React.Component {
       myChart.on('click', { series: 'circle' }, function (params) {
         if (flag) {
           color_c = 'green';
+          myChart.setOption(option);
         } else {
           color_c = 'blue';
+          myChart.setOption(option);
         }
         console.log(flag);
         flag = !flag;
@@ -146,18 +148,6 @@ class DeviceMap extends React.Component {
       myChart.setOption(option);
     });
   };
-  // getOption = () => {
-  //   () => {};
-  //   axios
-  //     .get('api/img/iceland_svg.svg')
-  //     .then((response) => {
-  //       console.log('llllllllllllll');
-  //       echarts.registerMap('iceland_svg', { svg: response.data });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
 
   render() {
     return <div id="main" style={{ height: 430 }}></div>;

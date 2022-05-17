@@ -25,7 +25,6 @@ import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
 import Modal from './components/add-modal';
 import { deleteUser, getUserInfo } from '@/services/ant-design-pro/api';
-import access from '@/access';
 import EditModal from './components/edit-modal';
 
 //import SearchBuilder from './builder/searchBuilder';

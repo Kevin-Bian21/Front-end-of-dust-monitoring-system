@@ -61,7 +61,7 @@ export default [
     path: '/system-data/environment-data',
     name: 'monitorData',
     icon: 'icon-shuju',
-    component: './404',
+    component: './table/envDataList',
   },
   {
     path: '/system-data/logging-data',
