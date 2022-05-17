@@ -31,6 +31,6 @@ const Page = () => {
       </div>
     );
   };
-  return <PageContainer>{chartLayout()}</PageContainer>;
+  return <div>{chartLayout()}</div>;
 };
 export default Page;

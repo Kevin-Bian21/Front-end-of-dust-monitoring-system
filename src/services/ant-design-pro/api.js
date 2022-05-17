@@ -94,3 +94,11 @@ export async function updateUser(body, options) {
     ...(options || {}),
   });
 }
+
+export async function getMonitorVideoSrc(params, options) {
+  return request('/api/getMonitorVideoSrc', {
+    method: 'GET',
+    params: { ...params },
+    ...(options || {}),
+  });
+}

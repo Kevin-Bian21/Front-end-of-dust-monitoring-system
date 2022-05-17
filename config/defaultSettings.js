@@ -1,7 +1,7 @@
 const Settings = {
   navTheme: 'dark',
   // 拂晓蓝
-  primaryColor: '#52C41A',
+  primaryColor: '#0e4194',
   layout: 'top',
   contentWidth: 'Fluid',
   fixedHeader: true,

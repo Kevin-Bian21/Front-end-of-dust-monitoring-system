@@ -14,9 +14,15 @@ import DeviceMap from './device-map';
 import CloseDevice from './components/close-device';
 import StateDevice from './components/state-device';
 import MonitorVideo from './video/monitor-video';
+import { getMonitorVideoSrc } from '@/services/ant-design-pro/api';
 
 const MonitorCard = () => {
-  const [monitorVideoSrc, setMonitorVideoSrc] = useState(null);
+  const [monitorVideoSrc, setMonitorVideoSrc] = useState(
+    'https://bianwenkai.oss-cn-beijing.aliyuncs.com/video/monitor-video.mp4',
+  );
+  const [selectLocal, setSelectLocal] = useState(null);
+
+  useEffect(() => {}, []);
 
   const onChange = (value) => {
     if (value == false) {
@@ -28,61 +34,19 @@ const MonitorCard = () => {
 
   const selectMonitorVideo = async (value) => {
     if (value) {
-      const msg = await getMonitorVideoSrc(value);
-      if (msg.success) {
-        message.success(msg.message);
+      setSelectLocal(value);
+      const msg = await getMonitorVideoSrc({ local: value });
+      if (msg) {
+        setMonitorVideoSrc(msg);
+        message.success('监控加载成功!');
       } else {
-        message.error(msg.message);
+        message.error('监控加载失败!');
       }
     }
   };
 
   return (
     <div>
-      <div className={Styles.cardwrapper}>
-        <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
-          <Col span={8}>
-            <Card
-              title="设备运行状况"
-              bordered={false}
-              hoverable={true}
-              size={'small'}
-              //style={{ width: 200, height: 200 }}
-            >
-              <div style={{ height: 140 }}>
-                <StateDevice />
-              </div>
-            </Card>
-          </Col>
-          <Col span={16}>
-            <Card
-              title="监控视频"
-              bordered={false}
-              hoverable={true}
-              size={'small'}
-              extra={
-                <Select style={{ width: 120 }} onChange={selectMonitorVideo()}>
-                  <Select.Option value="1">一号监测点</Select.Option>
-                  <Select.Option value="2">二号监测点</Select.Option>
-                  <Select.Option value="3">三号监测点</Select.Option>
-                  <Select.Option value="4">四号监测点</Select.Option>
-                  <Select.Option value="5">五号监测点</Select.Option>
-                  <Select.Option value="6">六号监测点</Select.Option>
-                  <Select.Option value="7">七号监测点</Select.Option>
-                </Select>
-              }
-            >
-              <MonitorVideo
-                video_url={monitorVideoSrc}
-                onReady={(play) => {
-                  console.log('play====', play);
-                  play.play();
-                }}
-              />
-            </Card>
-          </Col>
-        </Row>
-      </div>
       <div className={Styles.cardwrapper}>
         <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
           <Col span={24}>
@@ -93,7 +57,7 @@ const MonitorCard = () => {
               // size={'small'}
               headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
               // loading="true"
-              style={{ height: 500 }}
+              style={{ height: 520 }}
               extra={
                 <>
                   <Switch
@@ -114,6 +78,51 @@ const MonitorCard = () => {
               <div style={{ height: 430 }}>
                 <DeviceMap />
               </div>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+
+      <div className={Styles.cardwrapper}>
+        <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
+          <Col span={8}>
+            <Card
+              title="设备运行状况"
+              bordered={false}
+              hoverable={true}
+              size={'small'}
+              //style={{ width: 200, height: 200 }}
+            >
+              <div style={{ height: 140 }}>
+                <StateDevice />
+              </div>
+            </Card>
+          </Col>
+          <Col span={16}>
+            <Card
+              title="监测点监控视频"
+              bordered={false}
+              size={'small'}
+              extra={
+                <Select style={{ width: 120 }} onChange={selectMonitorVideo}>
+                  <Select.Option value="1">一号监测点</Select.Option>
+                  <Select.Option value="2">二号监测点</Select.Option>
+                  <Select.Option value="3">三号监测点</Select.Option>
+                  <Select.Option value="4">四号监测点</Select.Option>
+                  <Select.Option value="5">五号监测点</Select.Option>
+                  <Select.Option value="6">六号监测点</Select.Option>
+                  <Select.Option value="7">七号监测点</Select.Option>
+                </Select>
+              }
+            >
+              <MonitorVideo
+                video_url={monitorVideoSrc}
+                onReady={(play) => {
+                  console.log('play====', play);
+                  play.play();
+                }}
+                selectLocal={selectLocal}
+              />
             </Card>
           </Col>
         </Row>

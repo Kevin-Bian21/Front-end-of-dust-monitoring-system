@@ -5,7 +5,7 @@ import React, { useRef, useEffect } from 'react';
 const MonitorVideo = (props) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
-  const { onReady, video_url } = props;
+  const { onReady, video_url, selectLocal } = props;
 
   let options = {
     controls: true,
@@ -54,7 +54,7 @@ const MonitorVideo = (props) => {
       player.src(options.sources[0].src);
       player.autoplay(true);
     }
-  }, [videoRef]);
+  }, [videoRef, selectLocal]);
 
   return (
     <div data-vjs-player>
