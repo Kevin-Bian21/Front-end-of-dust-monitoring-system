@@ -211,7 +211,7 @@ class DustInfoTable extends React.Component {
             </Col>
           </Row>
         </div>
-        <div style={{ paddingTop: 10 }}>
+        <div style={{ paddingTop: 12 }}>
           <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
             <Col span={24}>
               <div>

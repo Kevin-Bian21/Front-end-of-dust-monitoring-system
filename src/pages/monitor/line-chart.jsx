@@ -126,8 +126,10 @@ const DemoLine = () => {
       <Card
         title={lineTitle}
         headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
+        style={{ height: 650 }}
       >
         <ReactEcharts
+          style={{ height: 550 }}
           option={getOption(
             data.dustDensity,
             data.temperature,

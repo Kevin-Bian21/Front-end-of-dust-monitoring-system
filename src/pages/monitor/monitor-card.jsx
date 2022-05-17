@@ -21,20 +21,26 @@ const MonitorCard = () => {
     'https://bianwenkai.oss-cn-beijing.aliyuncs.com/video/monitor-video.mp4',
   );
   const [selectLocal, setSelectLocal] = useState(null);
+  const [localValue, setLocalValue] = useState(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fun();
+  }, [selectLocal]);
+
+  async function fun() {
+    setLocalValue(Math.random());
+  }
 
   const onChange = (value) => {
     if (value == false) {
       setModalVisible(true);
-      console.log(value);
     }
   };
   const [modalVisible, setModalVisible] = useState(false);
 
   const selectMonitorVideo = async (value) => {
+    setSelectLocal(value);
     if (value) {
-      setSelectLocal(value);
       const msg = await getMonitorVideoSrc({ local: value });
       if (msg) {
         setMonitorVideoSrc(msg);
@@ -57,7 +63,9 @@ const MonitorCard = () => {
               // size={'small'}
               headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
               // loading="true"
-              style={{ height: 520 }}
+              style={{
+                height: 512,
+              }}
               extra={
                 <>
                   <Switch
@@ -118,10 +126,10 @@ const MonitorCard = () => {
               <MonitorVideo
                 video_url={monitorVideoSrc}
                 onReady={(play) => {
-                  console.log('play====', play);
+                  // console.log('play====', play);
                   play.play();
                 }}
-                selectLocal={selectLocal}
+                selectLocal={localValue}
               />
             </Card>
           </Col>

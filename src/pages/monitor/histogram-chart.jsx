@@ -10,7 +10,7 @@ const HistogramChart = (props) => {
 
   const config = {
     data,
-    height: 245,
+    height: 340,
     isGroup: 'true',
     xField: 'local',
     yField: 'value',
