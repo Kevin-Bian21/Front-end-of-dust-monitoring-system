@@ -23,6 +23,7 @@ const MonitorCard = () => {
   const [selectLocal, setSelectLocal] = useState(null);
   const [localValue, setLocalValue] = useState(null);
 
+  //解决seletLocal赋值不能及时生效导致监控视频无法和下拉选择框选择的监测点相匹配的问题
   useEffect(() => {
     fun();
   }, [selectLocal]);
@@ -64,7 +65,7 @@ const MonitorCard = () => {
               headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
               // loading="true"
               style={{
-                height: 512,
+                height: 517,
               }}
               extra={
                 <>

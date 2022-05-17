@@ -150,7 +150,7 @@ class DeviceMap extends React.Component {
   };
 
   render() {
-    return <div id="main" style={{ height: 415 }}></div>;
+    return <div id="main" style={{ height: 425 }}></div>;
   }
 }
 

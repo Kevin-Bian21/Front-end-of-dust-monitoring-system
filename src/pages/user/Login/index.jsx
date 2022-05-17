@@ -64,11 +64,7 @@ const Login = () => {
       const msg = await login({ ...values, type });
 
       if (msg.success === true) {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultLoginSuccessMessage);
+        message.success(msg.message);
         localStorage.setItem('token', msg.token);
 
         await fetchUserInfo();
@@ -80,15 +76,13 @@ const Login = () => {
         // history.push(redirect || '/');
         goto();
         return;
+      } else {
+        message.error(msg.message);
+        // 如果失败去设置用户错误信息
+        setUserLoginState(msg);
       }
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
     } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
-      });
-      message.error(defaultLoginFailureMessage);
+      message.error('登录失败，请重试！');
     }
     setSubmitting(false);
   };

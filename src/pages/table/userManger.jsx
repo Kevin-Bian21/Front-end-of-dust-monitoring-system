@@ -123,6 +123,15 @@ const UserManger = () => {
       align: 'center',
     },
     {
+      title: '登录次数',
+      dataIndex: 'loginCount',
+      key: 'loginCount',
+      sorter: {
+        compare: (a, b) => a.loginCount - b.loginCount,
+        multiple: 4, //多列排序优先级为最高
+      },
+    },
+    {
       title: '权限',
       dataIndex: 'access',
       key: 'access',
