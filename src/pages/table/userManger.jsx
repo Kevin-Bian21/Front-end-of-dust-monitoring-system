@@ -126,6 +126,13 @@ const UserManger = () => {
       title: '权限',
       dataIndex: 'access',
       key: 'access',
+      render: (access) => {
+        return access === 'admin' ? (
+          <Tag color="blue">管理员</Tag>
+        ) : (
+          <Tag color="green">普通用户</Tag>
+        );
+      },
     },
     {
       title: '操作',

@@ -89,23 +89,11 @@ class DustInfoTable extends React.Component {
       },
       {
         title: '预警等级',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (tags) => (
-          <>
-            {(tags || []).map((tag) => {
-              let color = 'green';
-              if (tag === '严重') {
-                color = 'volcano';
-              }
-              return (
-                <Tag color={color} key={tag}>
-                  {tag}
-                </Tag>
-              );
-            })}
-          </>
-        ),
+        key: 'tag',
+        dataIndex: 'tag',
+        render: (tag) => {
+          return tag === '严重' ? <Tag color="volcano">{tag}</Tag> : <Tag color="green">{tag}</Tag>;
+        },
       },
 
       {
@@ -201,8 +189,10 @@ class DustInfoTable extends React.Component {
                       </Button>
                       <Tooltip
                         title={`当前预警值：粉尘浓度${
-                          JSON.parse(localStorage.getItem('limitValue')).dustLimit
-                        }g,温度${JSON.parse(localStorage.getItem('limitValue')).temperatureLimit}℃`}
+                          JSON.parse(localStorage.getItem('limitValue'))?.dustLimit
+                        }g,温度${
+                          JSON.parse(localStorage.getItem('limitValue'))?.temperatureLimit
+                        }℃`}
                         color="gray"
                         style={{ paddingLeft: 1000 }}
                       >

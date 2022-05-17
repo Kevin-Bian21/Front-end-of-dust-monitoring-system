@@ -41,7 +41,11 @@ const HistogramChart = (props) => {
   const onShowLineChart = (plot) => {
     plot.on('element:click', (...args) => {
       const local = args[0].data?.data?.local;
-      history.push({ pathname: `/dust-chart/line-chart`, state: local, query: { limitValue } });
+      history.push({
+        pathname: `/dust/monitor/lineChartWithIn24h`,
+        state: local,
+        query: { limitValue },
+      });
     });
   };
 
