@@ -50,14 +50,13 @@ class DustInfoTable extends React.Component {
     let socketURL = `ws://localhost:8080/ws/${localStorage.getItem('token')}`;
     createWebSocket(socketURL);
 
-    notificationInfo('success', 'WebSocket', 'webSocket连接成功,每10秒推送一次最新数据', 3);
     PubSub.subscribe('dataSource', (name, context) => {
       this.setState({ data: context });
     });
     window.onbeforeunload = function () {
       closeWebSocket();
       // PubSub.unsubscribe('dataSource');
-      notificationInfo('warning', 'WebSocket', 'webSocket断开连接', 3);
+      // message.info('webSocket断开连接');
     };
 
     const columns = [
@@ -135,7 +134,6 @@ class DustInfoTable extends React.Component {
   componentWillUnmount() {
     closeWebSocket();
     PubSub.unsubscribe('dataSource');
-    notificationInfo('warning', 'WebSocket', 'webSocket断开连接', 3);
   }
 
   // componentDidUpdate(prevProps, prevState) {
@@ -168,7 +166,12 @@ class DustInfoTable extends React.Component {
                         required: true,
                         message: '请输入温度!',
                       },
-                      { pattern: new RegExp(/^[1-9]d*.d*|0.d*[1-9]d*$/), message: '请输入数字!' },
+                      {
+                        pattern: new RegExp(
+                          /^(([0-9]|[0-9][1-9]|[1-9][0-9])(\.\d{1,2})?|0\.\d{1,2}|100)$/,
+                        ),
+                        message: '请输入0-100.00的浮点数!',
+                      },
                     ]}
                   >
                     <Input placeholder="粉尘浓度" />
@@ -181,7 +184,12 @@ class DustInfoTable extends React.Component {
                         required: true,
                         message: '请输入温度!',
                       },
-                      { pattern: new RegExp(/^[1-9]d*.d*|0.d*[1-9]d*$/), message: '请输入数字!' },
+                      {
+                        pattern: new RegExp(
+                          /^(((-)?([0-9]|[0-9][1-9]|[1-9][0-9]))(\.\d{1,2})?|0\.\d{1,2}|50)$/,
+                        ),
+                        message: '请输入-50℃-50.00℃的浮点数!',
+                      },
                     ]}
                   >
                     <Input placeholder="温度" />
@@ -192,7 +200,9 @@ class DustInfoTable extends React.Component {
                         提交
                       </Button>
                       <Tooltip
-                        title="默认预警值：粉尘浓度50g,温度30℃"
+                        title={`当前预警值：粉尘浓度${
+                          JSON.parse(localStorage.getItem('limitValue')).dustLimit
+                        }g,温度${JSON.parse(localStorage.getItem('limitValue')).temperatureLimit}℃`}
                         color="gray"
                         style={{ paddingLeft: 1000 }}
                       >

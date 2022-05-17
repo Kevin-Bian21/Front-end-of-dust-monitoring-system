@@ -1,6 +1,6 @@
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { PubSub } from 'pubsub-js';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 
 let websocket,
   lockReconnect = false;
@@ -11,6 +11,7 @@ let createWebSocket = (url) => {
   websocket.onopen = function () {
     //heartCheck.reset().start();
     console.log(new Date() + 'websocket已打开，正在连接...');
+    message.success('webSocket连接成功,每20秒推送一次最新数据');
 
     //在页面跳转后返回时，让其通过socket像后端传送一次之前设置的值
     if (websocket) {
@@ -20,6 +21,7 @@ let createWebSocket = (url) => {
   };
   //关闭事件
   websocket.onclose = function () {
+    message.info('webSocket断开连接');
     console.log('websocket已关闭');
   };
   //发生了错误事件
