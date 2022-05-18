@@ -18,7 +18,7 @@ import {
   Select,
 } from 'antd';
 import { ExclamationCircleOutlined, ReconciliationFilled, SearchOutlined } from '@ant-design/icons';
-import { useRequest } from 'umi';
+import { useRequest, useAccess, Access } from 'umi';
 import styles from './tableList.less';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { useToggle, useUpdateEffect } from 'ahooks';
@@ -38,6 +38,10 @@ const EnvDataList = () => {
   const [endDateTime, setEndDateTime] = useState(null);
   const [resetDate, setResetDate] = useState(new Date());
   const [moitorLocal, setMonitorLocal] = useState(null);
+  const access = useAccess();
+
+  console.log(useAccess);
+  console.log(access);
 
   useEffect(() => {
     fetchData();
@@ -204,16 +208,24 @@ const EnvDataList = () => {
                     >
                       重置
                     </Button>
-                    <div style={{ paddingLeft: 50 }}>
-                      <Button
-                        onClick={() => {
-                          downloadExcel(data);
-                        }}
-                      >
-                        <ExportOutlined rotate={270} />
-                        导出
-                      </Button>
-                    </div>
+
+                    <Access
+                      accessible={access.canExportExcel}
+                      // fallback={
+
+                      // }
+                    >
+                      <div style={{ paddingLeft: 50 }}>
+                        <Button
+                          onClick={() => {
+                            downloadExcel(data);
+                          }}
+                        >
+                          <ExportOutlined rotate={270} />
+                          导出
+                        </Button>
+                      </div>
+                    </Access>
                   </Space>
                 </Col>
               </Row>
