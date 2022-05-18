@@ -68,14 +68,13 @@ export default [
     name: 'loggingData',
     icon: 'icon-logger',
     access: 'canAdmin',
-    access: 'canSuperAdmin',
     component: './table/loggingDataList',
   },
   {
     name: 'list.table-list',
     icon: 'icon-yonghuguanli',
     path: '/admin/manger',
-    access: 'canSuperAdmin',
+    access: 'canAdmin',
     component: './table/userManger',
   },
 

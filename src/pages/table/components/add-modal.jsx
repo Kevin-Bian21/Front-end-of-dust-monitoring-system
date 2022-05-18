@@ -3,9 +3,13 @@ import { Modal as AntdModal, Button, Form, Input, Tag, Select, message } from 'a
 import { addUser } from '@/services/ant-design-pro/api';
 import { useEffect } from 'react';
 import { values } from 'lodash';
+import { useAccess, Access } from 'umi';
+import { render } from 'react-dom';
 
 const Modal = ({ modalVisible, hideModal, reloadData }) => {
   const [form] = Form.useForm();
+  const access = useAccess();
+  console.log(access);
 
   useEffect(() => {
     form.resetFields();
@@ -104,10 +108,17 @@ const Modal = ({ modalVisible, hideModal, reloadData }) => {
               },
             ]}
           >
-            <Select>
-              <Select.Option value="2">管理员</Select.Option>
-              <Select.Option value="3">普通用户</Select.Option>
-            </Select>
+            <Access accessible={access.canSuperAdmin}>
+              <Select>
+                <Select.Option value="2">管理员</Select.Option>
+                <Select.Option value="3">普通用户</Select.Option>
+              </Select>
+            </Access>
+            <Access accessible={access.canOnlyAdmin}>
+              <Select>
+                <Select.Option value="3">普通用户</Select.Option>
+              </Select>
+            </Access>
           </Form.Item>
         </Form>
       </AntdModal>

@@ -17,7 +17,7 @@ import {
   message,
 } from 'antd';
 import { ExclamationCircleOutlined, ReconciliationFilled, SearchOutlined } from '@ant-design/icons';
-import { useRequest } from 'umi';
+import { useRequest, useAccess, Access } from 'umi';
 import styles from './tableList.less';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { useToggle, useUpdateEffect } from 'ahooks';
@@ -46,6 +46,7 @@ const UserManger = () => {
   const [data, setData] = useState([]);
   const [resetDate, setResetDate] = useState(new Date());
   const [willEditData, setWillEditData] = useState([]);
+  const access = useAccess();
 
   useEffect(() => {
     fetchData();
@@ -65,7 +66,6 @@ const UserManger = () => {
       endDateTime: endDateTime || null,
     };
     const initData = await getUserInfo(values);
-    console.log(initData);
     setData(initData);
   }
 
@@ -74,10 +74,10 @@ const UserManger = () => {
       title: 'ID',
       dataIndex: 'userId',
       key: 'userId',
-      sorter: {
-        compare: (a, b) => a.userId - b.userId,
-        multiple: 1, //多列排序优先级为最高
-      },
+      // sorter: {
+      //   compare: (a, b) => a.userId - b.userId,
+      //   multiple: 1, //多列排序优先级为最高
+      // },
       render: (text) => <a>{text}</a>,
     },
     {
@@ -108,7 +108,7 @@ const UserManger = () => {
       key: 'generateTime',
       sorter: {
         compare: (a, b) => new Date(a.generateTime) - new Date(b.generateTime),
-        multiple: 2, //多列排序优先级为最高
+        multiple: 3, //多列排序优先级为最高
       },
       align: 'center',
     },
@@ -118,7 +118,7 @@ const UserManger = () => {
       key: 'lastLoginTime',
       sorter: {
         compare: (a, b) => new Date(a.lastLoginTime) - new Date(b.lastLoginTime),
-        multiple: 3, //多列排序优先级为最高
+        multiple: 2, //多列排序优先级为最高
       },
       align: 'center',
     },
@@ -128,15 +128,15 @@ const UserManger = () => {
       key: 'loginCount',
       sorter: {
         compare: (a, b) => a.loginCount - b.loginCount,
-        multiple: 4, //多列排序优先级为最高
+        multiple: 1, //多列排序优先级为最高
       },
     },
     {
       title: '权限',
       dataIndex: 'access',
-      key: 'access',
-      render: (access) => {
-        return access === 'admin' ? (
+      key: 'role',
+      render: (role) => {
+        return role === 'admin' ? (
           <Tag color="blue">管理员</Tag>
         ) : (
           <Tag color="green">普通用户</Tag>
@@ -412,7 +412,8 @@ const UserManger = () => {
           dataSource={data}
           columns={columns}
           pagination={false}
-          rowSelection={rowSelection}
+          //只有超级管理员才可以进行批量删除
+          rowSelection={access.canSuperAdmin && rowSelection}
           loading="true"
         />
         {afterTableLayout()}

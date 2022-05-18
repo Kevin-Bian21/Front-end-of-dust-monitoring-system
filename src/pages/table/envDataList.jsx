@@ -40,9 +40,6 @@ const EnvDataList = () => {
   const [moitorLocal, setMonitorLocal] = useState(null);
   const access = useAccess();
 
-  console.log(useAccess);
-  console.log(access);
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -209,12 +206,7 @@ const EnvDataList = () => {
                       重置
                     </Button>
 
-                    <Access
-                      accessible={access.canExportExcel}
-                      // fallback={
-
-                      // }
-                    >
+                    <Access accessible={access.canExportExcel}>
                       <div style={{ paddingLeft: 50 }}>
                         <Button
                           onClick={() => {
