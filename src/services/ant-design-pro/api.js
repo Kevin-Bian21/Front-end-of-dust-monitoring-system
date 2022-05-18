@@ -102,3 +102,14 @@ export async function getMonitorVideoSrc(params, options) {
     ...(options || {}),
   });
 }
+
+export async function getAllMonitorData(body, options) {
+  return request('/api/getAllMonitorData', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

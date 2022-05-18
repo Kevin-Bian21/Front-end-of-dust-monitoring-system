@@ -54,7 +54,7 @@ const UserManger = () => {
   //监听这些值的变化，如果发送改变，则立即执行该方法
   useEffect(() => {
     fetchData();
-  }, [page, limit, searchMessage, startDateTime]);
+  }, [page, limit, searchMessage]);
 
   async function fetchData() {
     const values = {

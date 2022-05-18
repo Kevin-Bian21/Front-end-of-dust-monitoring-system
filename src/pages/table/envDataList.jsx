@@ -15,6 +15,7 @@ import {
   Input,
   DatePicker,
   message,
+  Select,
 } from 'antd';
 import { ExclamationCircleOutlined, ReconciliationFilled, SearchOutlined } from '@ant-design/icons';
 import { useRequest } from 'umi';
@@ -23,21 +24,45 @@ import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import { useToggle, useUpdateEffect } from 'ahooks';
 import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
-
-//import SearchBuilder from './builder/searchBuilder';
+import { getAllMonitorData } from '@/services/ant-design-pro/api';
 
 const EnvDataList = () => {
-  useEffect(() => {
-    // fetchData();
-  }, []);
-
   const [data, setData] = useState([]);
   const [searchForm] = Form.useForm();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const [startDateTime, setStartDateTime] = useState(null);
   const [endDateTime, setEndDateTime] = useState(null);
   const [resetDate, setResetDate] = useState(new Date());
+  const [moitorLocal, setMonitorLocal] = useState(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [page, limit, moitorLocal]);
+
+  async function fetchData() {
+    const values = {
+      searchMessage: moitorLocal,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      page: page,
+      limit: limit,
+    };
+    const initData = await getAllMonitorData(values);
+    setData(initData);
+  }
 
   const columns = [
+    {
+      title: '序号',
+      dataIndex: 'id',
+      key: 'id',
+      render: (text) => <a>{text}</a>,
+    },
     {
       title: '监测位置',
       dataIndex: 'monitorLocal',
@@ -48,6 +73,13 @@ const EnvDataList = () => {
       title: '粉尘浓度(g/m³)',
       dataIndex: 'dustDensity',
       key: 'dustDensity',
+      render: (dustDensity) => {
+        return dustDensity > JSON.parse(localStorage.getItem('limitValue'))?.dustLimit ? (
+          <Tag color="volcano">{dustDensity}</Tag>
+        ) : (
+          <Tag color="green">{dustDensity}</Tag>
+        );
+      },
       sorter: {
         compare: (a, b) => a.dustDensity - b.dustDensity,
         multiple: 1, //多列排序优先级为最高
@@ -57,6 +89,13 @@ const EnvDataList = () => {
       title: '温度(℃)',
       dataIndex: 'temperature',
       key: 'temperature',
+      render: (temperature) => {
+        return temperature > JSON.parse(localStorage.getItem('limitValue'))?.temperatureLimit ? (
+          <Tag color="volcano">{temperature}</Tag>
+        ) : (
+          <Tag color="green">{temperature}</Tag>
+        );
+      },
       sorter: {
         compare: (a, b) => a.temperature - b.temperature,
         multiple: 2, //多列排序优先级为最高
@@ -68,7 +107,7 @@ const EnvDataList = () => {
       key: 'humidity',
       sorter: {
         compare: (a, b) => a.humidity - b.humidity,
-        multiple: 3, //多列排序优先级为最高
+        multiple: 4, //多列排序优先级为最高
       },
     },
     {
@@ -77,7 +116,7 @@ const EnvDataList = () => {
       key: 'windSpeed',
       sorter: {
         compare: (a, b) => a.windSpeed - b.windSpeed,
-        multiple: 4, //多列排序优先级为最高
+        multiple: 5, //多列排序优先级为最高
       },
     },
     {
@@ -86,7 +125,7 @@ const EnvDataList = () => {
       key: 'monitorDateTime',
       sorter: {
         compare: (a, b) => new Date(a.monitorDateTime) - new Date(b.monitorDateTime),
-        multiple: 5, //多列排序优先级为最高
+        multiple: 3, //多列排序优先级为最高
       },
       align: 'center',
     },
@@ -97,27 +136,39 @@ const EnvDataList = () => {
     setEndDateTime(dateString[1]);
   };
 
+  const onFinish = (value) => {
+    if (value && value.monitorLocal) {
+      setMonitorLocal(value.monitorLocal);
+    }
+  };
   //顶部搜索框
   const searchLayout = () => {
     return (
       <QueueAnim type="top">
         <div>
           <Card className={styles.searchForm}>
-            <Form form={searchForm}>
+            <Form form={searchForm} onFinish={onFinish}>
               <Row>
                 <Col sm={6}>
-                  <Form.Item
-                    label="全表搜索"
-                    name="searchMessage"
-                    rules={[{ required: false, message: 'Please input your username!' }]}
-                  >
-                    <Input />
+                  <Form.Item label="监测位置" name="monitorLocal">
+                    <Select>
+                      <Select.Option value="一号监测点">一号监测点</Select.Option>
+                      <Select.Option value="二号监测点">二号监测点</Select.Option>
+                      <Select.Option value="三号监测点">三号监测点</Select.Option>
+                      <Select.Option value="四号监测点">四号监测点</Select.Option>
+                      <Select.Option value="五号监测点">五号监测点</Select.Option>
+                      <Select.Option value="六号监测点">六号监测点</Select.Option>
+                      <Select.Option value="七号监测点">七号监测点</Select.Option>
+                      <Select.Option value="八号监测点">八号监测点</Select.Option>
+                      <Select.Option value="九号监测点">九号监测点</Select.Option>
+                      <Select.Option value="十号监测点">十号监测点</Select.Option>
+                    </Select>
                   </Form.Item>
                 </Col>
                 <Col sm={12}>
-                  <Form.Item label="创建时间">
+                  <Form.Item label="时间范围">
                     <DatePicker.RangePicker
-                      // showTime
+                      showTime
                       style={{ width: '100%' }}
                       onChange={onChange}
                       key={resetDate}
@@ -142,10 +193,8 @@ const EnvDataList = () => {
                     <Button
                       onClick={() => {
                         searchForm.resetFields();
-                        setSelectedRowKeys([]);
-                        setSelectedRows([]);
                         setResetDate(new Date());
-                        setSearchMessage(null);
+                        setMonitorLocal(null);
                         setStartDateTime(null);
                         setEndDateTime(null);
                       }}
@@ -176,7 +225,8 @@ const EnvDataList = () => {
             onShowSizeChange={onShowSizeChange}
             onChange={onShowSizeChange}
             hideOnSinglePage={false}
-            total={2 * data.length}
+            total={data.length * data.length}
+            pageSizeOptions={[10, 50, 100, 500, 1000, 5000]}
           />
         </Col>
       </Row>
@@ -185,8 +235,6 @@ const EnvDataList = () => {
   function onShowSizeChange(current, pageSize) {
     setPage(current);
     setLimit(pageSize);
-    // fetchData();
-    console.log(current, pageSize);
   }
 
   return (
