@@ -25,6 +25,9 @@ import { useToggle, useUpdateEffect } from 'ahooks';
 import moment from 'moment';
 import QueueAnim from 'rc-queue-anim';
 import { getAllMonitorData } from '@/services/ant-design-pro/api';
+import ExportExcel from 'js-export-excel';
+import { ExportOutlined } from '@ant-design/icons';
+import { downloadExcel } from './builder/downloadData';
 
 const EnvDataList = () => {
   const [data, setData] = useState([]);
@@ -201,10 +204,18 @@ const EnvDataList = () => {
                     >
                       重置
                     </Button>
+                    <div style={{ paddingLeft: 50 }}>
+                      <Button
+                        onClick={() => {
+                          downloadExcel(data);
+                        }}
+                      >
+                        <ExportOutlined rotate={270} />
+                        导出
+                      </Button>
+                    </div>
                   </Space>
                 </Col>
-
-                {/* {SearchBuilder(columns)} */}
               </Row>
             </Form>
           </Card>

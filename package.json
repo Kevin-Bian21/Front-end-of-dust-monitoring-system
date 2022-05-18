@@ -62,6 +62,7 @@
     "echarts": "^5.3.2",
     "echarts-for-react": "^3.0.2",
     "jquery": "^3.6.0",
+    "js-export-excel": "^1.1.4",
     "lodash": "^4.17.0",
     "moment": "^2.29.3",
     "omit.js": "^2.0.2",
