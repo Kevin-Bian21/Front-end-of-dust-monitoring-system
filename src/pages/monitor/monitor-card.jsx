@@ -62,10 +62,14 @@ const MonitorCard = () => {
               bordered={false}
               // hoverable={true}
               // size={'small'}
-              headStyle={{ color: '#3f3f3f', textAlign: 'center', fontWeight: 'bolder' }}
+              headStyle={{
+                color: '#3f3f3f',
+                textAlign: 'center',
+                fontWeight: 'bolder',
+              }}
               // loading="true"
               style={{
-                height: 517,
+                height: 525,
               }}
               extra={
                 <>
@@ -126,10 +130,11 @@ const MonitorCard = () => {
             >
               <MonitorVideo
                 video_url={monitorVideoSrc}
-                onReady={(play) => {
-                  // console.log('play====', play);
-                  play.play();
-                }}
+                // onReady={(play) => {
+                //   // console.log('play====', play);
+                //   play.play();
+                // }}
+
                 selectLocal={localValue}
               />
             </Card>

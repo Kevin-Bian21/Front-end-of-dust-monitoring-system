@@ -18,7 +18,7 @@ const Page = () => {
       <div>
         <Row align="top" gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}>
           <Col span={12}>
-            <DemoBox value={180}>
+            <DemoBox value={150}>
               <MonitorCard />
             </DemoBox>
           </Col>

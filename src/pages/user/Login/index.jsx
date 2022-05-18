@@ -77,7 +77,7 @@ const Login = () => {
         goto();
         return;
       } else {
-        message.error(msg.message);
+        // message.error(msg.message);
         // 如果失败去设置用户错误信息
         setUserLoginState(msg);
       }
