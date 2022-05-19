@@ -9,8 +9,6 @@ const UpdatePasswordModal = ({ isModalVisible, hideModal }) => {
 
   const [form] = Form.useForm();
 
-  console.log(isModalVisible);
-
   const handleOk = async () => {
     form
       .validateFields()

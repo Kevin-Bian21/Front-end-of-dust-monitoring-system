@@ -124,3 +124,10 @@ export async function updatePassword(body, options) {
     ...(options || {}),
   });
 }
+
+export async function getPersonalDetails(params, options) {
+  return request('/api/getPersonalDetails', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
