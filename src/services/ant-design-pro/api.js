@@ -131,3 +131,14 @@ export async function getPersonalDetails(params, options) {
     ...(options || {}),
   });
 }
+
+export async function updatePersonalInfo(body, options) {
+  return request('/api/updatePersonalInfo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

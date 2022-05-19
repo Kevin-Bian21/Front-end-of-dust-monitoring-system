@@ -15,7 +15,9 @@ import {
 import { InfoCircleOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import UpdatePasswordModal from './components/updatePasswordModal';
-import { getPersonalDetails } from '@/services/ant-design-pro/api';
+import { getPersonalDetails, updatePersonalInfo, currentUser } from '@/services/ant-design-pro/api';
+import { useModel } from 'umi';
+import { getInitialState } from '@/app';
 
 export default () => {
   const [form] = Form.useForm();
@@ -23,6 +25,7 @@ export default () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [data] = useState();
+  const { initialState, setInitialState } = useModel('@@initialState');
 
   useEffect(() => {
     fetchData();
@@ -73,6 +76,16 @@ export default () => {
     </div>
   );
 
+  const onFinish = async (value) => {
+    const msg = await updatePersonalInfo(value);
+    if (msg?.success == 'ok') {
+      fetchData();
+      message.success(msg.message);
+    } else {
+      message.error(msg.message);
+    }
+  };
+
   return (
     <Row>
       <Col span={9} />
@@ -97,18 +110,51 @@ export default () => {
             )}
           </Upload>
           <Divider />
-          <Form form={form} layout="vertical" wrapperCol={{ span: 22 }}>
+          <Form form={form} layout="vertical" wrapperCol={{ span: 22 }} onFinish={onFinish}>
             <Form.Item label="登录账户" name="loginAccount">
               <Input disabled="true" />
             </Form.Item>
-            <Form.Item label="姓名" required name="userName">
-              <Input placeholder="input placeholder" />
+            <Form.Item
+              label="姓名"
+              required
+              name="userName"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入姓名',
+                },
+                { len: '50', message: '输入的名称太长！' },
+              ]}
+            >
+              <Input placeholder="请输入姓名" />
             </Form.Item>
-            <Form.Item label="电话" required name="phone">
+            <Form.Item
+              label="电话"
+              required
+              name="phone"
+              rules={[
+                {
+                  pattern: new RegExp(
+                    /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,
+                  ),
+                  message: '请输入正确的手机号码',
+                },
+              ]}
+            >
               <Input placeholder="请输入电话" />
             </Form.Item>
-            <Form.Item label="邮箱">
-              <Input placeholder="input placeholder" name="email" />
+            <Form.Item
+              label="邮箱"
+              name="email"
+              allowClear
+              rules={[
+                {
+                  type: 'email',
+                  message: '请输入正确的电子邮箱',
+                },
+              ]}
+            >
+              <Input />
             </Form.Item>
             <Form.Item label="密码" name="pwd" initialValue="************">
               <Input disabled="true" />
