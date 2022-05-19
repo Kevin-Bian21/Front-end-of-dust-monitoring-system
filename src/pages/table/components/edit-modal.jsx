@@ -26,10 +26,9 @@ const EditModal = ({ modalVisible, hideModal, record, reloadData }) => {
   };
 
   const updateUserInfo = async (values) => {
-    const data = form.getFieldsValue();
-    const msg = await updateUser(data);
+    const msg = await updateUser(values);
     if (msg) {
-      if (msg.success) {
+      if (msg.success === 'ok') {
         hideModal();
         message.success(msg.message);
       } else {
@@ -97,7 +96,7 @@ const EditModal = ({ modalVisible, hideModal, record, reloadData }) => {
               },
               {
                 min: 6,
-                message: '必须包含字母和数字的组合,长度在5-20之间',
+                message: '密码长度需大于6个字符',
               },
             ]}
             hasFeedback

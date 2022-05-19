@@ -113,3 +113,14 @@ export async function getAllMonitorData(body, options) {
     ...(options || {}),
   });
 }
+
+export async function updatePassword(body, options) {
+  return request('/api/updatePassword', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

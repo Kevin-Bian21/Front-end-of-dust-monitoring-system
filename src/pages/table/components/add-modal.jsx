@@ -29,10 +29,9 @@ const Modal = ({ modalVisible, hideModal, reloadData }) => {
   };
 
   const addUserInfo = async (values) => {
-    const data = form.getFieldsValue();
-    const msg = await addUser(data);
+    const msg = await addUser(values);
     if (msg) {
-      if (msg.success) {
+      if (msg.success === 'ok') {
         hideModal();
         message.success(msg.message);
       } else {
@@ -91,7 +90,7 @@ const Modal = ({ modalVisible, hideModal, reloadData }) => {
               },
               {
                 min: 6,
-                message: '长度在需大于6个字符',
+                message: '密码长度需大于6个字符',
               },
             ]}
             hasFeedback

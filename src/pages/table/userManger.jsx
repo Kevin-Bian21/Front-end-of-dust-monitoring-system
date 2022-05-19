@@ -203,7 +203,7 @@ const UserManger = () => {
   async function deleteUserData(ids) {
     const msg = await deleteUser(ids);
     if (msg) {
-      if (msg.success) {
+      if (msg.success === 'ok') {
         message.success(msg.message);
         fetchData();
       } else {

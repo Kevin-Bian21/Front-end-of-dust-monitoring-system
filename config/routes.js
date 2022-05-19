@@ -82,7 +82,7 @@ export default [
     name: 'account-center',
     icon: 'icon-icon03',
     path: '/account/center',
-    component: './404',
+    component: './user/center/account',
   },
 
   // {
