@@ -7,13 +7,13 @@ const StateDevice = () => {
   const config = {
     percent: 0.25,
     outline: {
-      border: 4,
-      distance: 6,
+      border: 3,
+      distance: 5,
     },
     wave: {
       length: 100,
     },
-    color: '#52c41a',
+    color: '#0e4194',
   };
   return <Liquid {...config} />;
 };

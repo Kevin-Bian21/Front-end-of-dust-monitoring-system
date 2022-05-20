@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Liquid } from '@ant-design/plots';
-import { Statistic, Card, Row, Col, Switch, notification, Select, message } from 'antd';
+import { Statistic, Card, Row, Col, Switch, notification, Select, message, Divider } from 'antd';
 import {
   ArrowUpOutlined,
   ArrowDownOutlined,
   CloseOutlined,
   CheckOutlined,
   SoundTwoTone,
+  AlertOutlined,
 } from '@ant-design/icons';
 import Styles from './dust-chart.less';
 import DeviceMap from './device-map';
 import CloseDevice from './components/close-device';
 import StateDevice from './components/state-device';
 import MonitorVideo from './video/monitor-video';
-import { getMonitorVideoSrc } from '@/services/ant-design-pro/api';
+import { getMonitorVideoSrc, getNumberOfEarlyWarningRecord } from '@/services/ant-design-pro/api';
 
 const MonitorCard = () => {
   const [monitorVideoSrc, setMonitorVideoSrc] = useState(
-    'https://bianwenkai.oss-cn-beijing.aliyuncs.com/video/monitor-video.mp4',
+    'https://bianwenkai.oss-cn-beijing.aliyuncs.com/video/local-2.mp4',
   );
   const [selectLocal, setSelectLocal] = useState(null);
   const [localValue, setLocalValue] = useState(null);
+  const [numberOfEarlyWarning, setNumberOfEarlyWarning] = useState(0);
 
   //解决seletLocal赋值不能及时生效导致监控视频无法和下拉选择框选择的监测点相匹配的问题
   useEffect(() => {
@@ -69,7 +71,7 @@ const MonitorCard = () => {
               }}
               // loading="true"
               style={{
-                height: 525,
+                height: 530,
               }}
               extra={
                 <>
@@ -109,15 +111,27 @@ const MonitorCard = () => {
               <div style={{ height: 140 }}>
                 <StateDevice />
               </div>
+              <Divider />
+              <Statistic
+                title="今日预警"
+                value={186}
+                valueStyle={{ color: '#f81d22' }}
+                prefix={<AlertOutlined />}
+                suffix="次"
+              />
             </Card>
           </Col>
           <Col span={16}>
             <Card
-              title="监测点监控视频"
+              title="监测点喷雾运行情况"
               bordered={false}
               size={'small'}
               extra={
-                <Select style={{ width: 120 }} onChange={selectMonitorVideo}>
+                <Select
+                  style={{ width: 120 }}
+                  onChange={selectMonitorVideo}
+                  placeholder="一号监测点"
+                >
                   <Select.Option value="1">一号监测点</Select.Option>
                   <Select.Option value="2">二号监测点</Select.Option>
                   <Select.Option value="3">三号监测点</Select.Option>

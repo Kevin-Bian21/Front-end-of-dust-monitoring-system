@@ -46,7 +46,7 @@ const EnvDataList = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page, limit, moitorLocal]);
+  }, [page, limit, moitorLocal, endDateTime]);
 
   async function fetchData() {
     const values = {
@@ -77,13 +77,6 @@ const EnvDataList = () => {
       title: '粉尘浓度(g/m³)',
       dataIndex: 'dustDensity',
       key: 'dustDensity',
-      render: (dustDensity) => {
-        return dustDensity > JSON.parse(localStorage.getItem('limitValue'))?.dustLimit ? (
-          <Tag color="volcano">{dustDensity}</Tag>
-        ) : (
-          <Tag color="green">{dustDensity}</Tag>
-        );
-      },
       sorter: {
         compare: (a, b) => a.dustDensity - b.dustDensity,
         multiple: 1, //多列排序优先级为最高
@@ -93,13 +86,6 @@ const EnvDataList = () => {
       title: '温度(℃)',
       dataIndex: 'temperature',
       key: 'temperature',
-      render: (temperature) => {
-        return temperature > JSON.parse(localStorage.getItem('limitValue'))?.temperatureLimit ? (
-          <Tag color="volcano">{temperature}</Tag>
-        ) : (
-          <Tag color="green">{temperature}</Tag>
-        );
-      },
       sorter: {
         compare: (a, b) => a.temperature - b.temperature,
         multiple: 2, //多列排序优先级为最高
@@ -132,6 +118,29 @@ const EnvDataList = () => {
         multiple: 3, //多列排序优先级为最高
       },
       align: 'center',
+    },
+    {
+      title: '预警等级',
+      dataIndex: 'level',
+      key: 'level',
+      render: (level) => {
+        return level == '严重' ? (
+          <Tag color="volcano">{level}</Tag>
+        ) : (
+          <Tag color="green">{level}</Tag>
+        );
+      },
+      align: 'center',
+    },
+    {
+      title: '粉尘浓度预警值',
+      dataIndex: 'dustLimit',
+      key: 'dustLimit',
+    },
+    {
+      title: '温度预警值',
+      dataIndex: 'temperatureLimit',
+      key: 'temperatureLimit',
     },
   ];
 

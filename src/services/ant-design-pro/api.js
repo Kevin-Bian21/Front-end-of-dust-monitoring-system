@@ -142,3 +142,10 @@ export async function updatePersonalInfo(body, options) {
     ...(options || {}),
   });
 }
+
+export async function getNumberOfEarlyWarningRecord(options) {
+  return request('/api/getNumberOfEarlyWarningRecord', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}

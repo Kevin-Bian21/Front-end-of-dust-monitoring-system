@@ -3,7 +3,7 @@
   "short_name": "粉尘监测",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
-  "theme_color": "#002140",
+  "theme_color": "#0e4194",
   "background_color": "#212121",
   "icons": [
     {

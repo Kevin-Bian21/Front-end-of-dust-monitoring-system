@@ -63,13 +63,13 @@ export default [
     icon: 'icon-shuju',
     component: './table/envDataList',
   },
-  {
-    path: '/system/data/logging',
-    name: 'loggingData',
-    icon: 'icon-logger',
-    access: 'canAdmin',
-    component: './table/loggingDataList',
-  },
+  // {
+  //   path: '/system/data/logging',
+  //   name: 'loggingData',
+  //   icon: 'icon-logger',
+  //   access: 'canAdmin',
+  //   component: './table/loggingDataList',
+  // },
   {
     name: 'list.table-list',
     icon: 'icon-yonghuguanli',
