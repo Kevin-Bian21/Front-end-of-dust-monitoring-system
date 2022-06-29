@@ -34,6 +34,8 @@ npm start
 npm run build
 ```
 
+
+
 ### Check code style
 
 ```bash
@@ -51,6 +53,16 @@ npm run lint:fix
 ```bash
 npm test
 ```
+
+
+![image](https://user-images.githubusercontent.com/64765636/176487963-4f40db27-f794-4da2-8859-2f5ae10dff3b.png)
+![image](https://user-images.githubusercontent.com/64765636/176488005-28ac5d73-8bdc-480d-8a05-6f6d6d995988.png)
+![image](https://user-images.githubusercontent.com/64765636/176488034-355c82dd-a99f-4aa0-922e-2ba2f4c9ab05.png)
+![image](https://user-images.githubusercontent.com/64765636/176488063-d5d9fb52-0af7-481a-ab00-8095b719b2cc.png)
+![image](https://user-images.githubusercontent.com/64765636/176488114-ec4e4488-2806-4ec2-b10f-fae759afe5a9.png)
+![image](https://user-images.githubusercontent.com/64765636/176488153-9fbc1943-ccf0-47f4-b724-88876741b779.png)
+![image](https://user-images.githubusercontent.com/64765636/176488182-b9e220ae-feef-43f0-b15f-1d1db2753999.png)
+![image](https://user-images.githubusercontent.com/64765636/176488221-6fe80354-a948-4865-8b06-6b707d283e2e.png)
 
 ## More
 
